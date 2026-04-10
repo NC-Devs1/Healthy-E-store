@@ -292,6 +292,10 @@ ul{list-style:none}
   box-shadow:inset 0 0 0 1px rgba(255,255,255,.6); /* inner highlight */
 }
 .product-img-wrap img{width:100%;height:100%;object-fit:cover;object-position:center top;transition:transform .7s var(--ease)}
+@media(max-width:700px){
+  .product-img-wrap{aspect-ratio:4/3;margin:8px 8px 0}
+  .product-img-wrap img{object-position:center center}
+}
 .product-card:hover .product-img-wrap img{transform:scale(1.05)}
 .product-badge{position:absolute;top:12px;left:12px;background:var(--coral);color:white;font-size:11px;font-weight:700;letter-spacing:.06em;padding:4px 10px;border-radius:6px;text-transform:uppercase}
 .product-badge.new{background:var(--sage)}
