@@ -1453,7 +1453,7 @@ async function subscribeNewsletter() {
   const email = input.value.trim();
   if (!email || !email.includes('@')) { showToast('Please enter a valid email address'); return; }
 
-  const FORMSPREE_ID = 'YOUR_FORM_ID'; // ← replace with your Formspree form ID
+  const FORMSPREE_ID = 'mojpgayd';
   try {
     const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
       method: 'POST',
