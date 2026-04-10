@@ -4,6 +4,37 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Healthy-E | Premium Organic Wellness Store</title>
+
+<!-- SEO -->
+<meta name="description" content="Premium organic wellness — eco-friendly yoga apparel, ceremonial matcha, superfoods, and sustainable gear. Mindfully sourced, ethically made.">
+<meta name="keywords" content="organic wellness, eco yoga apparel, ceremonial matcha, superfoods, cork yoga mat, sustainable fitness">
+<meta name="author" content="Healthy-E">
+<link rel="canonical" href="https://healthy-e.store/">
+
+<!-- PWA / Theme -->
+<meta name="theme-color" content="#2D5016">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Healthy-E">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="icon" type="image/png" href="/HealthyEatsLogo_1024x1024_transparent.png">
+<link rel="apple-touch-icon" href="/HealthyEatsLogo_1024x1024_transparent.png">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://healthy-e.store/">
+<meta property="og:title" content="Healthy-E | Premium Organic Wellness Store">
+<meta property="og:description" content="Premium organic wellness — eco-friendly yoga apparel, ceremonial matcha, superfoods, and sustainable gear.">
+<meta property="og:image" content="https://healthy-e.store/HealthyEatsLogo_1024x1024_transparent.png">
+<meta property="og:locale" content="en_US">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Healthy-E | Premium Organic Wellness Store">
+<meta name="twitter:description" content="Premium organic wellness — eco-friendly yoga apparel, ceremonial matcha, superfoods, and sustainable gear.">
+<meta name="twitter:image" content="https://healthy-e.store/HealthyEatsLogo_1024x1024_transparent.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -38,12 +69,25 @@ a{text-decoration:none;color:inherit}
 button{font-family:inherit;cursor:pointer;border:none;background:none}
 ul{list-style:none}
 
+/* LUXURY SHIMMER — transform-only, GPU composited */
+@keyframes luxury-shimmer{
+  0%{transform:translateX(-120%) skewX(-20deg)}
+  100%{transform:translateX(650%) skewX(-20deg)}
+}
+.announce-bar,.trust-bar,.marquee-section,.testimonials,footer{position:relative;overflow:hidden}
+.announce-bar::before,.trust-bar::before,.marquee-section::before,.testimonials::before,footer::before{
+  content:'';position:absolute;inset:0;width:18%;
+  background:linear-gradient(90deg,transparent 0%,rgba(196,163,90,.16) 45%,rgba(255,248,210,.1) 50%,rgba(196,163,90,.16) 55%,transparent 100%);
+  animation:luxury-shimmer 9s ease-in-out infinite;
+  pointer-events:none;mix-blend-mode:overlay;z-index:1
+}
+
 /* ANNOUNCEMENT BAR */
-.announce-bar{background:var(--deep-green);color:var(--cream);text-align:center;padding:10px 16px;font-size:13px;font-weight:500;letter-spacing:.04em;position:relative;z-index:200}
+.announce-bar{background:linear-gradient(160deg,#0d2204 0%,#1A3A0A 55%,#1e4212 100%);color:var(--cream);text-align:center;padding:10px 16px;font-size:13px;font-weight:500;letter-spacing:.04em;position:relative;z-index:200}
 .announce-bar span{color:var(--gold)}
 
 /* NAVBAR */
-.navbar{position:fixed;top:32px;left:0;right:0;height:var(--nav-h);z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,3rem);background:rgba(243,248,241,0.92);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border-bottom:1px solid var(--border);transition:all .4s var(--ease)}
+.navbar{position:fixed;top:32px;left:0;right:0;height:var(--nav-h);z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,3rem);background:rgba(243,248,241,0.92);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border-bottom:1px solid var(--border);transition:top .4s var(--ease),background .4s var(--ease),box-shadow .4s var(--ease)}
 .navbar.scrolled{top:0;background:rgba(243,248,241,0.97);box-shadow:var(--shadow)}
 .navbar.announce-hidden{top:0}
 .nav-logo{display:flex;align-items:center;gap:10px;flex-shrink:0}
@@ -51,16 +95,23 @@ ul{list-style:none}
 .nav-logo-text{font-size:15px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--forest)}
 .nav-center{display:flex;align-items:center;gap:4px}
 .nav-item{position:relative}
-.nav-link{display:flex;align-items:center;gap:5px;padding:8px 14px;font-size:14px;font-weight:600;color:var(--charcoal);border-radius:8px;transition:all .2s;letter-spacing:.02em}
+.nav-link{display:flex;align-items:center;gap:5px;padding:8px 14px;font-size:14px;font-weight:600;color:var(--charcoal);border-radius:8px;transition:color .2s,background .2s;letter-spacing:.02em}
 .nav-link:hover{color:var(--forest);background:rgba(45,80,22,.06)}
 .nav-link svg{transition:transform .25s var(--ease)}
 .nav-item:hover .nav-link svg{transform:rotate(180deg)}
 .dropdown{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%) translateY(8px);min-width:240px;background:var(--white);border-radius:var(--r-lg);box-shadow:var(--shadow-lg);border:1px solid var(--border);padding:8px;opacity:0;pointer-events:none;transition:all .25s var(--ease)}
 .nav-item:hover .dropdown{opacity:1;pointer-events:all;transform:translateX(-50%) translateY(0)}
-.dropdown-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;font-size:14px;font-weight:500;color:var(--charcoal);transition:all .18s}
+.dropdown-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;font-size:14px;font-weight:500;color:var(--charcoal);transition:color .18s,background .18s}
 .dropdown-item:hover{background:var(--light-cream);color:var(--forest)}
 .dropdown-item .d-icon{width:32px;height:32px;border-radius:8px;background:var(--light-cream);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
 .dropdown-divider{height:1px;background:var(--border);margin:6px 4px}
+.d-label{font-weight:700}
+.d-sub{font-size:12px;color:#888;margin-top:2px}
+.cat-grid-inner{max-width:1200px;margin:0 auto}
+.test-eyebrow{color:var(--gold)}
+.test-title{color:var(--cream)}
+.newsletter-note{font-size:12px;color:rgba(245,240,232,.4);margin-top:12px}
+.cart-count-label{font-size:13px;font-weight:500;color:#999}
 .nav-right{display:flex;align-items:center;gap:8px}
 .nav-icon-btn{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--charcoal);transition:all .2s;position:relative}
 .nav-icon-btn:hover{background:rgba(45,80,22,.08);color:var(--forest)}
@@ -80,11 +131,13 @@ ul{list-style:none}
 .hero-slide.active .hero-bg{transform:scale(1)}
 .hero-overlay{position:absolute;inset:0;background:linear-gradient(105deg,rgba(26,58,10,.7) 0%,rgba(26,58,10,.2) 60%,transparent 100%)}
 .hero-content{position:relative;z-index:2;padding:0 clamp(2rem,8vw,6rem);max-width:700px}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(196,163,90,.2);border:1px solid rgba(196,163,90,.4);color:var(--gold);font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:6px 14px;border-radius:20px;margin-bottom:24px;animation:fadeInUp .6s var(--ease) .1s both}
-.hero-h1{font-size:clamp(2.4rem,6vw,4.2rem);font-weight:800;color:var(--white);line-height:1.1;letter-spacing:-.02em;margin-bottom:20px;animation:fadeInUp .8s var(--ease) .2s both}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(196,163,90,.2);border:1px solid rgba(196,163,90,.4);color:var(--gold);font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:6px 14px;border-radius:20px;margin-bottom:24px;opacity:0;transform:translateY(16px)}
+.hero-h1{font-size:clamp(2.4rem,6vw,4.2rem);font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-.02em;margin-bottom:20px}
+.hero-h1-line{display:block}
+.hero-h1-words{display:inline-flex;flex-wrap:wrap;gap:0 .28em;align-items:baseline}
 .hero-h1 em{font-style:italic;font-family:'Instrument Serif',serif;color:var(--gold)}
-.hero-sub{font-size:clamp(1rem,1.6vw,1.2rem);color:rgba(245,240,232,.85);margin-bottom:36px;max-width:480px;animation:fadeInUp .6s var(--ease) .35s both}
-.hero-btns{display:flex;gap:12px;flex-wrap:wrap;animation:fadeInUp .6s var(--ease) .5s both}
+.hero-sub{font-size:clamp(1rem,1.6vw,1.2rem);color:rgba(245,240,232,.85);margin-bottom:36px;max-width:480px;opacity:0;transform:translateY(20px)}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;opacity:0;transform:translateY(18px)}
 .btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--forest);color:white;padding:14px 28px;border-radius:var(--r);font-weight:700;font-size:15px;transition:all .25s var(--ease);letter-spacing:.02em}
 .btn-primary:hover{background:var(--deep-green);transform:translateY(-2px);box-shadow:0 8px 32px rgba(45,80,22,.35)}
 .btn-secondary{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);color:white;padding:14px 28px;border-radius:var(--r);font-weight:600;font-size:15px;border:1.5px solid rgba(255,255,255,.4);transition:all .25s var(--ease);backdrop-filter:blur(8px)}
@@ -96,6 +149,88 @@ ul{list-style:none}
 .hero-arrow:hover{background:rgba(255,255,255,.3)}
 .hero-prev{left:24px}
 .hero-next{right:24px}
+
+/* ── HERO ENHANCED ANIMATION ────────────────────────────── */
+/* Slide-state driven transitions (replaces static fadeInUp) */
+.hero-slide.active .hero-eyebrow{
+  opacity:1;transform:translateY(0);
+  transition:opacity .65s var(--ease) .12s, transform .65s var(--ease) .12s;
+}
+.hero-slide.active .hero-sub{
+  opacity:1;transform:translateY(0);
+  transition:opacity .65s var(--ease) .58s, transform .65s var(--ease) .58s;
+}
+.hero-slide.active .hero-btns{
+  opacity:1;transform:translateY(0);
+  transition:opacity .65s var(--ease) .74s, transform .65s var(--ease) .74s;
+}
+
+/* Word-split headline — clip-reveal per word */
+.hero-h1 .hw{display:inline-block;overflow:hidden;vertical-align:bottom;line-height:1.2;padding-bottom:.12em;margin-bottom:-.12em}
+.hero-h1 .hw-inner{display:inline-block;transform:translateY(110%)}
+.hero-slide.active .hero-h1 .hw-inner{
+  transform:translateY(0);
+  transition:transform .75s var(--ease);
+}
+/* Line 1 words */
+.hero-slide.active .hero-h1-line:nth-child(1) .hw:nth-child(1) .hw-inner{transition-delay:.22s}
+.hero-slide.active .hero-h1-line:nth-child(1) .hw:nth-child(2) .hw-inner{transition-delay:.32s}
+.hero-slide.active .hero-h1-line:nth-child(1) .hw:nth-child(3) .hw-inner{transition-delay:.42s}
+.hero-slide.active .hero-h1-line:nth-child(1) .hw:nth-child(4) .hw-inner{transition-delay:.52s}
+/* Line 2 words — offset by ~.35s so they trail the first line */
+.hero-slide.active .hero-h1-line:nth-child(2) .hw:nth-child(1) .hw-inner{transition-delay:.52s}
+.hero-slide.active .hero-h1-line:nth-child(2) .hw:nth-child(2) .hw-inner{transition-delay:.62s}
+.hero-slide.active .hero-h1-line:nth-child(2) .hw:nth-child(3) .hw-inner{transition-delay:.72s}
+.hero-slide.active .hero-h1-line:nth-child(2) .hw:nth-child(4) .hw-inner{transition-delay:.82s}
+
+/* Floating morphing blobs */
+@keyframes blob-morph{
+  0%,100%{border-radius:60% 40% 30% 70%/60% 30% 70% 40%;transform:translate(0,0) scale(1)}
+  25%{border-radius:30% 60% 70% 40%/50% 60% 30% 60%;transform:translate(2%,3%) scale(1.04)}
+  50%{border-radius:50% 50% 30% 70%/30% 50% 70% 50%;transform:translate(-3%,5%) scale(.97)}
+  75%{border-radius:40% 60% 60% 40%/70% 30% 60% 40%;transform:translate(3%,-2%) scale(1.02)}
+}
+.hero-blobs{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.hero-blob{position:absolute;border-radius:60% 40% 30% 70%/60% 30% 70% 40%}
+.hero-blob-1{
+  width:520px;height:520px;right:-8%;top:-18%;
+  background:radial-gradient(circle,rgba(196,163,90,.22) 0%,transparent 70%);
+  animation:blob-morph 20s ease-in-out infinite;
+}
+.hero-blob-2{
+  width:360px;height:360px;left:-4%;bottom:-12%;
+  background:radial-gradient(circle,rgba(107,143,94,.18) 0%,transparent 70%);
+  animation:blob-morph 26s ease-in-out infinite reverse;
+}
+.hero-blob-3{
+  width:220px;height:220px;right:28%;bottom:18%;
+  background:radial-gradient(circle,rgba(196,163,90,.14) 0%,transparent 70%);
+  animation:blob-morph 16s ease-in-out infinite 4s;
+}
+
+/* Floating decorative rings */
+@keyframes orb-drift{
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  33%{transform:translateY(-18px) rotate(120deg)}
+  66%{transform:translateY(10px) rotate(240deg)}
+}
+.hero-orbs{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.hero-orb{position:absolute;border-radius:50%;border:1px solid rgba(196,163,90,.22)}
+.hero-orb-1{width:90px;height:90px;right:16%;top:22%;animation:orb-drift 11s ease-in-out infinite}
+.hero-orb-2{width:44px;height:44px;right:30%;top:58%;background:rgba(196,163,90,.07);border:none;animation:orb-drift 15s ease-in-out infinite -4s}
+.hero-orb-3{width:130px;height:130px;right:6%;bottom:22%;border-color:rgba(245,240,232,.1);animation:orb-drift 18s ease-in-out infinite -7s}
+.hero-orb-4{width:22px;height:22px;right:44%;top:32%;background:rgba(196,163,90,.18);border:none;animation:orb-drift 9s ease-in-out infinite -2s}
+.hero-orb-5{width:60px;height:60px;left:42%;bottom:28%;border-color:rgba(245,240,232,.09);animation:orb-drift 13s ease-in-out infinite -10s}
+
+/* Scroll indicator */
+@keyframes scroll-pulse{0%,100%{opacity:1;transform:translateY(0)}50%{opacity:.35;transform:translateY(9px)}}
+.hero-scroll{
+  position:absolute;bottom:88px;right:clamp(1.5rem,4vw,3.5rem);z-index:10;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  color:rgba(245,240,232,.55);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+}
+.hero-scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,rgba(196,163,90,.85),transparent);animation:scroll-pulse 2.2s ease-in-out infinite}
+@media(max-width:700px){.hero-scroll{display:none}}
 
 /* TRUST BAR */
 .trust-bar{background:var(--forest);padding:16px clamp(1rem,4vw,3rem);display:flex;justify-content:center;align-items:center;gap:clamp(24px,4vw,64px);flex-wrap:wrap}
@@ -136,16 +271,26 @@ ul{list-style:none}
 .carousel-next{right:-22px}
 
 /* PRODUCT CARD */
-.product-card{min-width:calc(25% - 15px);border-radius:var(--r-lg);overflow:hidden;background:var(--white);border:1.5px solid var(--border);transition:all .35s var(--ease);position:relative;flex-shrink:0}
+.product-card{min-width:calc(25% - 15px);border-radius:4px;overflow:hidden;background:var(--white);border:1px solid rgba(196,163,90,.22);transition:all .4s var(--ease);position:relative;flex-shrink:0;box-shadow:0 1px 6px rgba(44,44,44,.05)}
 @media(max-width:1024px){.product-card{min-width:calc(33.33% - 14px)}}
 @media(max-width:700px){.product-card{min-width:calc(50% - 10px)}}
 @media(max-width:420px){.product-card{min-width:calc(85%)}}
-.product-card:hover{border-color:var(--sage);transform:translateY(-4px);box-shadow:var(--shadow-lg)}
-.product-img-wrap{position:relative;overflow:hidden;aspect-ratio:1/1;background:var(--light-cream)}
-.product-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .65s var(--ease)}
-.product-card:hover .product-img-wrap img{transform:scale(1.07)}
+.product-card:hover{border-color:rgba(196,163,90,.55);transform:translateY(-4px);box-shadow:0 12px 36px rgba(44,44,44,.10),0 0 0 1px rgba(196,163,90,.3)}
+/* Image frame — even, precise, luxury */
+.product-img-wrap{
+  position:relative;overflow:hidden;aspect-ratio:16/7;
+  background:var(--light-cream);
+  margin:10px 10px 0;          /* equal gap on all sides so image floats inside card */
+  border-radius:2px;
+  border:1px solid rgba(196,163,90,.18);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.6); /* inner highlight */
+}
+.product-img-wrap img{width:100%;height:100%;object-fit:cover;object-position:center top;transition:transform .7s var(--ease)}
+.product-card:hover .product-img-wrap img{transform:scale(1.05)}
 .product-badge{position:absolute;top:12px;left:12px;background:var(--coral);color:white;font-size:11px;font-weight:700;letter-spacing:.06em;padding:4px 10px;border-radius:6px;text-transform:uppercase}
 .product-badge.new{background:var(--sage)}
+.product-badge.bestseller{background:var(--forest)}
+.product-badge.limited{background:var(--gold);color:var(--charcoal)}
 .product-badge.sale{background:var(--coral)}
 .quick-add{position:absolute;bottom:0;left:0;right:0;background:var(--forest);color:white;font-size:13px;font-weight:700;letter-spacing:.04em;padding:13px;text-align:center;transform:translateY(100%);transition:transform .3s var(--ease)}
 .product-card:hover .quick-add{transform:translateY(0)}
@@ -257,7 +402,7 @@ ul{list-style:none}
 /* PRODUCT MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(44,44,44,.55);backdrop-filter:blur(6px);z-index:2000;opacity:0;pointer-events:none;transition:opacity .35s;display:flex;align-items:center;justify-content:center;padding:24px}
 .modal-overlay.visible{opacity:1;pointer-events:all}
-.modal{background:var(--cream);border-radius:24px;max-width:900px;width:100%;max-height:90vh;overflow-y:auto;transform:scale(.94) translateY(20px);transition:all .35s var(--ease);box-shadow:0 32px 80px rgba(44,44,44,.25)}
+.modal{background:var(--cream);border-radius:24px;max-width:900px;width:100%;max-height:90vh;overflow-y:auto;transform:scale(.94) translateY(20px);transition:transform .35s var(--ease);box-shadow:0 32px 80px rgba(44,44,44,.25)}
 .modal-overlay.visible .modal{transform:scale(1) translateY(0)}
 .modal-inner{display:grid;grid-template-columns:1fr 1fr;gap:0}
 @media(max-width:680px){.modal-inner{grid-template-columns:1fr}}
@@ -346,6 +491,54 @@ footer{background:var(--deep-green);color:var(--cream);padding:clamp(3rem,6vw,5r
 
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 :focus-visible{outline:2px solid var(--forest);outline-offset:3px}
+
+/* ── AMBIENT MUSIC PLAYER ─────────────────────────────── */
+/* YouTube iframe must have real dimensions to initialize — hide via position only */
+#yt-music-anchor{position:fixed;top:-9999px;left:-9999px;width:320px;height:180px;border:0;pointer-events:none;visibility:hidden}
+/* "Tap to enable music" nudge — shows when autoplay is blocked */
+.music-nudge{
+  position:absolute;bottom:calc(100% + 10px);left:0;
+  background:rgba(20,46,8,.95);border:1px solid rgba(196,163,90,.4);
+  color:rgba(245,240,232,.88);font-size:10px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:7px 12px;border-radius:8px;white-space:nowrap;
+  pointer-events:none;opacity:0;transform:translateY(4px);
+  transition:opacity .3s,transform .3s;
+}
+.music-nudge::after{content:'';position:absolute;top:100%;left:18px;
+  border:5px solid transparent;border-top-color:rgba(196,163,90,.4)}
+.music-player.needs-gesture .music-nudge{opacity:1;transform:translateY(0)}
+.music-player{
+  position:fixed;bottom:28px;left:28px;z-index:950;
+  display:flex;align-items:center;gap:9px;
+  background:rgba(20,46,8,0.86);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border:1px solid rgba(196,163,90,.28);border-radius:50px;
+  padding:9px 14px 9px 13px;
+  box-shadow:0 4px 28px rgba(0,0,0,.22);
+  transition:border-color .3s,background .3s;
+}
+.music-player:hover{border-color:rgba(196,163,90,.55);background:rgba(20,46,8,.96)}
+.music-note{color:var(--gold);font-size:13px;line-height:1;flex-shrink:0}
+.music-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(245,240,232,.6)}
+@keyframes wave-bar{0%,100%{transform:scaleY(.25)}50%{transform:scaleY(1)}}
+.music-wave{display:flex;align-items:center;gap:3px;height:14px;flex-shrink:0}
+.music-wave span{display:block;width:3px;height:14px;background:var(--gold);border-radius:2px;transform-origin:bottom;opacity:.75}
+.music-player.is-playing .music-wave span{animation:wave-bar .85s ease-in-out infinite}
+.music-wave span:nth-child(2){animation-delay:.18s}
+.music-wave span:nth-child(3){animation-delay:.36s}
+.music-wave span:nth-child(4){animation-delay:.08s}
+.music-toggle{
+  width:26px;height:26px;border-radius:50%;flex-shrink:0;
+  background:rgba(196,163,90,.18);border:1px solid rgba(196,163,90,.45);
+  color:var(--gold);display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:background .2s;
+}
+.music-toggle:hover{background:rgba(196,163,90,.36)}
+@media(max-width:500px){.music-label{display:none}}
+#mPauseIcon{display:none}
+.music-player.is-playing #mPlayIcon{display:none}
+.music-player.is-playing #mPauseIcon{display:block}
 </style>
 </head>
 <body>
@@ -375,20 +568,20 @@ footer{background:var(--deep-green);color:var(--cream);padding:clamp(3rem,6vw,5r
       </a>
       <div class="dropdown">
         <a href="#" class="dropdown-item" onclick="filterProducts('apparel');scrollToShop();return false">
-          <span class="d-icon">👕</span><div><div style="font-weight:700">Yoga Apparel</div><div style="font-size:12px;color:#888;margin-top:2px">Shirts, pants & more</div></div>
+          <span class="d-icon">👕</span><div><div class="d-label">Yoga Apparel</div><div class="d-sub">Shirts, pants & more</div></div>
         </a>
         <a href="#" class="dropdown-item" onclick="filterProducts('superfoods');scrollToShop();return false">
-          <span class="d-icon">🌿</span><div><div style="font-weight:700">Superfoods</div><div style="font-size:12px;color:#888;margin-top:2px">Matcha, spirulina & more</div></div>
+          <span class="d-icon">🌿</span><div><div class="d-label">Superfoods</div><div class="d-sub">Matcha, spirulina & more</div></div>
         </a>
         <a href="#" class="dropdown-item" onclick="filterProducts('nuts');scrollToShop();return false">
-          <span class="d-icon">🥜</span><div><div style="font-weight:700">Nuts & Dried Fruits</div><div style="font-size:12px;color:#888;margin-top:2px">Raw, organic & delicious</div></div>
+          <span class="d-icon">🥜</span><div><div class="d-label">Nuts & Dried Fruits</div><div class="d-sub">Raw, organic & delicious</div></div>
         </a>
         <a href="#" class="dropdown-item" onclick="filterProducts('equipment');scrollToShop();return false">
-          <span class="d-icon">🧘</span><div><div style="font-weight:700">Wellness Equipment</div><div style="font-size:12px;color:#888;margin-top:2px">Mats, bands & accessories</div></div>
+          <span class="d-icon">🧘</span><div><div class="d-label">Wellness Equipment</div><div class="d-sub">Mats, bands & accessories</div></div>
         </a>
         <div class="dropdown-divider"></div>
         <a href="#" class="dropdown-item" onclick="filterProducts('all');scrollToShop();return false">
-          <span class="d-icon">✨</span><div><div style="font-weight:700">All Products</div></div>
+          <span class="d-icon">✨</span><div><div class="d-label">All Products</div></div>
         </a>
       </div>
     </div>
@@ -403,13 +596,13 @@ footer{background:var(--deep-green);color:var(--cream);padding:clamp(3rem,6vw,5r
   <div class="nav-right">
     <div class="search-bar">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input type="text" placeholder="Search products..." id="searchInput" oninput="handleSearch(this.value)">
+      <input type="text" placeholder="Search products..." id="searchInput" aria-label="Search products" oninput="handleSearch(this.value)">
     </div>
-    <button class="nav-icon-btn" onclick="toggleCart()" aria-label="Cart">
+    <button type="button" class="nav-icon-btn" onclick="toggleCart()" aria-label="Cart">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
       <span class="cart-badge" id="cartBadge" style="display:none">0</span>
     </button>
-    <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
+    <button type="button" class="hamburger" id="hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
   </div>
@@ -429,6 +622,20 @@ footer{background:var(--deep-green);color:var(--cream);padding:clamp(3rem,6vw,5r
 
 <!-- HERO CAROUSEL -->
 <section class="hero" id="hero">
+  <!-- Floating morphing blobs -->
+  <div class="hero-blobs" aria-hidden="true">
+    <div class="hero-blob hero-blob-1"></div>
+    <div class="hero-blob hero-blob-2"></div>
+    <div class="hero-blob hero-blob-3"></div>
+  </div>
+  <!-- Decorative floating orbs -->
+  <div class="hero-orbs" aria-hidden="true">
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+    <div class="hero-orb hero-orb-3"></div>
+    <div class="hero-orb hero-orb-4"></div>
+    <div class="hero-orb hero-orb-5"></div>
+  </div>
   <div class="hero-slides" id="heroSlides">
     <div class="hero-slide active">
       <div class="hero-bg" style="background-image:url('forest-green-mens-fitted-yoga-shirt.png');background-color:#2D5016"></div>
@@ -470,13 +677,18 @@ footer{background:var(--deep-green);color:var(--cream);padding:clamp(3rem,6vw,5r
       </div>
     </div>
   </div>
-  <button class="hero-arrow hero-prev" onclick="heroNav(-1)" aria-label="Previous">
+  <button type="button" class="hero-arrow hero-prev" onclick="heroNav(-1)" aria-label="Previous">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
   </button>
-  <button class="hero-arrow hero-next" onclick="heroNav(1)" aria-label="Next">
+  <button type="button" class="hero-arrow hero-next" onclick="heroNav(1)" aria-label="Next">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
   </button>
   <div class="hero-dots" id="heroDots"></div>
+  <!-- Animated scroll indicator -->
+  <div class="hero-scroll" aria-hidden="true">
+    <span>Scroll</span>
+    <div class="hero-scroll-line"></div>
+  </div>
 </section>
 
 <div class="stripe-divider"></div>
@@ -563,13 +775,13 @@ footer{background:var(--deep-green);color:var(--cream);padding:clamp(3rem,6vw,5r
     <p class="section-sub">Loved by thousands of wellness-seekers worldwide</p>
   </div>
   <div class="carousel-wrapper" data-reveal>
-    <button class="carousel-arrow carousel-prev" id="featPrev" aria-label="Previous">
+    <button type="button" class="carousel-arrow carousel-prev" id="featPrev" aria-label="Previous">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
     </button>
     <div class="carousel-track-outer">
       <div class="carousel-track" id="featTrack"></div>
     </div>
-    <button class="carousel-arrow carousel-next" id="featNext" aria-label="Next">
+    <button type="button" class="carousel-arrow carousel-next" id="featNext" aria-label="Next">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
     </button>
   </div>
@@ -585,11 +797,11 @@ footer{background:var(--deep-green);color:var(--cream);padding:clamp(3rem,6vw,5r
     <p class="section-sub">Sustainably sourced, thoughtfully crafted for your lifestyle</p>
   </div>
   <div class="filter-bar" id="filterBar">
-    <button class="filter-btn active" onclick="filterProducts('all')" data-filter="all">All Products</button>
-    <button class="filter-btn" onclick="filterProducts('apparel')" data-filter="apparel">Yoga Apparel</button>
-    <button class="filter-btn" onclick="filterProducts('superfoods')" data-filter="superfoods">Superfoods</button>
-    <button class="filter-btn" onclick="filterProducts('nuts')" data-filter="nuts">Nuts & Fruits</button>
-    <button class="filter-btn" onclick="filterProducts('equipment')" data-filter="equipment">Equipment</button>
+    <button type="button" class="filter-btn active" onclick="filterProducts('all')" data-filter="all">All Products</button>
+    <button type="button" class="filter-btn" onclick="filterProducts('apparel')" data-filter="apparel">Yoga Apparel</button>
+    <button type="button" class="filter-btn" onclick="filterProducts('superfoods')" data-filter="superfoods">Superfoods</button>
+    <button type="button" class="filter-btn" onclick="filterProducts('nuts')" data-filter="nuts">Nuts & Fruits</button>
+    <button type="button" class="filter-btn" onclick="filterProducts('equipment')" data-filter="equipment">Equipment</button>
   </div>
   <div class="products-grid" id="productsGrid"></div>
 </section>
@@ -677,8 +889,8 @@ footer{background:var(--deep-green);color:var(--cream);padding:clamp(3rem,6vw,5r
     <h2 class="section-title">Nourish Your <em>Inbox</em></h2>
     <p class="section-sub">Wellness tips, exclusive offers, and new arrivals — delivered with love.</p>
     <div class="newsletter-form">
-      <input type="email" class="newsletter-input" placeholder="Your email address" id="emailInput">
-      <button class="newsletter-submit" onclick="subscribeNewsletter()">Subscribe →</button>
+      <input type="email" class="newsletter-input" placeholder="Your email address" id="emailInput" aria-label="Email address for newsletter">
+      <button type="button" class="newsletter-submit" onclick="subscribeNewsletter()">Subscribe →</button>
     </div>
     <p style="font-size:12px;color:rgba(245,240,232,.4);margin-top:12px">No spam, ever. Unsubscribe anytime.</p>
   </div>
@@ -721,36 +933,36 @@ footer{background:var(--deep-green);color:var(--cream);padding:clamp(3rem,6vw,5r
     <div class="footer-col">
       <h4>Company</h4>
       <div class="footer-links">
-        <a href="#features">Our Story</a>
-        <a href="#features">Sustainability</a>
-        <a href="#newsletter">Contact Us</a>
-        <a href="#">Wholesale</a>
-        <a href="#">Affiliates</a>
+        <a href="our-story.html">Our Story</a>
+        <a href="sustainability.html">Sustainability</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="wholesale.html">Wholesale</a>
+        <a href="affiliates.html">Affiliates</a>
       </div>
     </div>
     <div class="footer-col">
       <h4>Support</h4>
       <div class="footer-links">
-        <a href="#">FAQ</a>
-        <a href="#">Shipping & Returns</a>
-        <a href="#">Track Order</a>
+        <a href="faq.html">FAQ</a>
+        <a href="shipping-returns.html">Shipping & Returns</a>
+        <a href="track-order.html">Track Order</a>
         <a href="privacy.html">Privacy Policy</a>
         <a href="terms.html">Terms of Service</a>
       </div>
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2026 NC-Developer, LLC — All Rights Reserved. Healthy Eats® is a registered trademark.</span>
+    <span>© 2026 NC-Developer, LLC — All Rights Reserved. Healthy Eat's® is a registered trademark.</span>
     <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a> &nbsp;·&nbsp; <a href="cookies.html">Cookies</a></span>
   </div>
 </footer>
 
 <!-- CART DRAWER -->
-<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-overlay" id="cartOverlay" role="button" aria-label="Close cart" tabindex="-1" onclick="toggleCart()"></div>
 <div class="cart-drawer" id="cartDrawer">
   <div class="cart-header">
     <div class="cart-title">Your Cart <span id="cartCountLabel" style="font-size:13px;font-weight:500;color:#999"></span></div>
-    <button class="cart-close" onclick="toggleCart()">
+    <button type="button" class="cart-close" onclick="toggleCart()" aria-label="Close cart">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
   </div>
@@ -761,7 +973,7 @@ footer{background:var(--deep-green);color:var(--cream);padding:clamp(3rem,6vw,5r
       <strong id="cartTotal">$0.00</strong>
     </div>
     <p class="cart-note">Shipping & taxes calculated at checkout</p>
-    <button class="checkout-btn">Proceed to Checkout →</button>
+    <button type="button" class="checkout-btn">Proceed to Checkout →</button>
   </div>
 </div>
 
@@ -770,8 +982,8 @@ footer{background:var(--deep-green);color:var(--cream);padding:clamp(3rem,6vw,5r
   <div class="modal" id="modal">
     <div class="modal-inner">
       <div class="modal-img-wrap">
-        <img id="modalImg" src="" alt="">
-        <button class="modal-close" onclick="closeModalDirect()">
+        <img id="modalImg" src="data:," alt="" aria-hidden="true">
+        <button type="button" class="modal-close" onclick="closeModalDirect()" aria-label="Close modal">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
@@ -785,10 +997,10 @@ footer{background:var(--deep-green);color:var(--cream);padding:clamp(3rem,6vw,5r
         <div class="modal-price" id="modalPrice"></div>
         <div class="modal-desc" id="modalDesc"></div>
         <div class="modal-variants" id="modalVariantsWrap" style="display:none">
-          <label id="modalVariantLabel"></label>
+          <label id="modalVariantLabel" for="modalVariants"></label>
           <div class="variant-options" id="modalVariants"></div>
         </div>
-        <button class="modal-add" id="modalAddBtn" onclick="addFromModal()">
+        <button type="button" class="modal-add" id="modalAddBtn" onclick="addFromModal()">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
           Add to Cart
         </button>
@@ -802,6 +1014,22 @@ footer{background:var(--deep-green);color:var(--cream);padding:clamp(3rem,6vw,5r
   <div class="toast-dot"></div>
   <span id="toastMsg"></span>
 </div>
+
+<!-- Ambient Music Player Widget — must be in DOM before the JS runs -->
+<div class="music-player" id="musicPlayer" role="region" aria-label="Ambient music player">
+  <span class="music-nudge" aria-live="polite">Click anywhere to enable sound</span>
+  <span class="music-note" aria-hidden="true">♫</span>
+  <span class="music-label">Ambient</span>
+  <div class="music-wave" aria-hidden="true">
+    <span></span><span></span><span></span><span></span>
+  </div>
+  <button type="button" class="music-toggle" id="musicToggle" aria-label="Play ambient music">
+    <svg id="mPlayIcon" width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+    <svg id="mPauseIcon" width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+  </button>
+</div>
+<!-- Hidden YouTube anchor — must exist before onYouTubeIframeAPIReady fires -->
+<div id="yt-music-anchor" aria-hidden="true"></div>
 
 <script>
 // ─── PRODUCT DATA ────────────────────────────────────────────
@@ -845,6 +1073,55 @@ let currentModal = null;
 let selectedVariant = null;
 
 // ─── HERO CAROUSEL ────────────────────────────────────────────
+// Split h1 words into animated spans for the clip-reveal effect
+document.querySelectorAll('.hero-h1').forEach(h1 => {
+  const children = Array.from(h1.childNodes);
+  h1.innerHTML = '';
+
+  // Group nodes into lines split by <br>
+  const lines = [[]];
+  children.forEach(node => {
+    if (node.nodeType === 1 && node.tagName === 'BR') {
+      lines.push([]);
+    } else {
+      lines[lines.length - 1].push(node);
+    }
+  });
+
+  lines.forEach((lineNodes, li) => {
+    const lineEl = document.createElement('span');
+    lineEl.className = 'hero-h1-line';
+    const wordsEl = document.createElement('span');
+    wordsEl.className = 'hero-h1-words';
+
+    lineNodes.forEach(node => {
+      if (node.nodeType === 3) { // Text node
+        node.textContent.trim().split(/\s+/).forEach(word => {
+          if (!word) return;
+          const hw = document.createElement('span');
+          hw.className = 'hw';
+          const inner = document.createElement('span');
+          inner.className = 'hw-inner';
+          inner.textContent = word;
+          hw.appendChild(inner);
+          wordsEl.appendChild(hw);
+        });
+      } else if (node.nodeType === 1) {
+        const hw = document.createElement('span');
+        hw.className = 'hw';
+        const inner = document.createElement('span');
+        inner.className = 'hw-inner';
+        inner.appendChild(node.cloneNode(true));
+        hw.appendChild(inner);
+        wordsEl.appendChild(hw);
+      }
+    });
+
+    lineEl.appendChild(wordsEl);
+    h1.appendChild(lineEl);
+  });
+});
+
 let heroIdx = 0;
 const heroSlides = document.querySelectorAll('.hero-slide');
 const heroDots = document.getElementById('heroDots');
@@ -867,7 +1144,13 @@ function heroGoTo(i) {
 }
 function heroNav(dir) { heroGoTo(heroIdx + dir); }
 function resetHeroTimer() { clearInterval(heroTimer); heroTimer = setInterval(()=>heroNav(1), 5200); }
-resetHeroTimer();
+
+// Trigger initial slide animation (force reflow so transitions fire)
+heroSlides[0].classList.remove('active');
+requestAnimationFrame(() => requestAnimationFrame(() => {
+  heroSlides[0].classList.add('active');
+  resetHeroTimer();
+}));
 
 // ─── FEATURED CAROUSEL ────────────────────────────────────────────
 const featured = PRODUCTS.filter(p => p.badge === 'Bestseller' || p.rating >= 4.9).slice(0, 8);
@@ -924,8 +1207,8 @@ renderGrid();
 function buildCard(p, isFeatured) {
   const card = document.createElement('div');
   card.className = 'product-card';
-  const starsStr = '★'.repeat(Math.floor(p.rating)) + (p.rating % 1 >= .5 ? '½' : '');
-  const badgeHTML = p.badge ? `<div class="product-badge ${p.badge==='New'?'new':'sale'}">${p.badge}</div>` : '';
+  const badgeClass = p.badge==='New'?'new':p.badge==='Bestseller'?'bestseller':p.badge==='Limited'?'limited':'sale';
+  const badgeHTML = p.badge ? `<div class="product-badge ${badgeClass}">${p.badge}</div>` : '';
   card.innerHTML = `
     <div class="product-img-wrap">
       <img src="${p.img}" alt="${p.name}" loading="lazy">
@@ -1131,20 +1414,18 @@ document.querySelectorAll('[data-reveal]').forEach(el => revealObs.observe(el));
 // ─── NAVBAR SCROLL ────────────────────────────────────────────
 const announceBar = document.getElementById('announceBar');
 const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
+function updateNavbar() {
   const scrolled = window.scrollY > 40;
   navbar.classList.toggle('scrolled', scrolled);
   const announceH = announceBar.offsetHeight;
-  if (window.scrollY > announceH) {
-    navbar.style.top = '0';
-  } else {
-    navbar.style.top = (announceH - window.scrollY) + 'px';
-  }
-});
+  navbar.style.top = window.scrollY > announceH ? '0' : (announceH - window.scrollY) + 'px';
+}
+window.addEventListener('scroll', updateNavbar);
+updateNavbar(); // set correct position on page load
 
 // ─── MOBILE MENU ────────────────────────────────────────────
 function toggleMobileMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
-function closeMobileMenu() { document.getElementById('mobileMenu').classList.remove('open'); scrollToShop(); }
+function closeMobileMenu() { document.getElementById('mobileMenu').classList.remove('open'); }
 
 // ─── NEWSLETTER ────────────────────────────────────────────
 function subscribeNewsletter() {
@@ -1153,6 +1434,155 @@ function subscribeNewsletter() {
   document.getElementById('emailInput').value = '';
   showToast('Welcome to the Healthy-E community! 🌿');
 }
+// ─── AMBIENT MUSIC PLAYER ─────────────────────────────────
+(function () {
+  var VIDEO_ID = '5yx6BWlEVcY';
+  var VOLUME   = 12; // 0–100
+
+  var playerEl         = document.getElementById('musicPlayer');
+  var toggleBtn        = document.getElementById('musicToggle');
+  var ytPlayer         = null;
+  var playing          = false;
+  var intentionalPause = false;
+
+  /* ── Update UI state ────────────────────────────────────── */
+  function setState(on) {
+    playing = on;
+    playerEl.classList.toggle('is-playing', on);
+    toggleBtn.setAttribute('aria-label', on ? 'Pause ambient music' : 'Play ambient music');
+  }
+
+  /* ── Unmute, set volume, play — with muted-check retry ─── */
+  function startAudio(target) {
+    var t = target || ytPlayer;
+    if (!t || typeof t.playVideo !== 'function') return;
+    t.setVolume(VOLUME);
+    t.unMute();
+    t.playVideo();
+    intentionalPause = false;
+
+    // Chrome silently re-mutes when there's been no user gesture.
+    // Check 250 ms later; if still muted, try once more then fall back.
+    setTimeout(function () {
+      if (!t.isMuted || !t.isMuted()) {
+        // Actually unmuted — we're live
+        setState(true);
+        disarmFirstInteract();
+        return;
+      }
+      // Still muted — one more aggressive attempt
+      t.setVolume(VOLUME);
+      t.unMute();
+      setTimeout(function () {
+        if (!t.isMuted || !t.isMuted()) {
+          setState(true);
+          disarmFirstInteract();
+        } else {
+          // Blocked — wait for first real user gesture
+          setState(false);
+          playerEl.classList.add('needs-gesture');
+          armFirstInteract();
+        }
+      }, 400);
+    }, 250);
+  }
+
+  /* ── First real user-gesture fallback ──────────────────── */
+  // Only click / pointerdown / touchstart / keydown count as
+  // "user activations" in Chrome — scroll does NOT.
+  var GESTURE_EVENTS = ['click', 'pointerdown', 'touchstart', 'keydown'];
+
+  function onFirstInteract(e) {
+    if (intentionalPause) return;
+    if (e && e.target === toggleBtn) return;
+    GESTURE_EVENTS.forEach(function (ev) {
+      document.removeEventListener(ev, onFirstInteract);
+    });
+    startAudio();
+  }
+
+  function armFirstInteract() {
+    GESTURE_EVENTS.forEach(function (ev) {
+      document.addEventListener(ev, onFirstInteract, { passive: true });
+    });
+  }
+
+  function disarmFirstInteract() {
+    GESTURE_EVENTS.forEach(function (ev) {
+      document.removeEventListener(ev, onFirstInteract);
+    });
+    playerEl.classList.remove('needs-gesture');
+  }
+
+  /* ── YouTube IFrame API ready ───────────────────────────── */
+  window.onYouTubeIframeAPIReady = function () {
+    ytPlayer = new YT.Player('yt-music-anchor', {
+      width:   320,
+      height:  180,
+      videoId: VIDEO_ID,
+      playerVars: {
+        autoplay:       1,         // muted autoplay — always allowed
+        controls:       0,
+        loop:           1,
+        playlist:       VIDEO_ID,  // required for loop
+        mute:           1,
+        modestbranding: 1,
+        rel:            0,
+        iv_load_policy: 3,
+        fs:             0,
+        disablekb:      1,
+        // no 'origin' — it causes postMessage errors on localhost
+        // and prevents onStateChange callbacks from firing
+      },
+      events: {
+        onReady: function (e) {
+          // Kick off the unmute attempt immediately
+          startAudio(e.target);
+        },
+        onStateChange: function (e) {
+          if (e.data === 1) {         // PLAYING
+            if (!playing) setState(true);
+            disarmFirstInteract();
+          } else if (e.data === 2) {  // PAUSED unexpectedly
+            if (!intentionalPause) {
+              setState(false);
+              playerEl.classList.add('needs-gesture');
+              armFirstInteract();
+            }
+          } else if (e.data === 0) {  // ENDED (live streams never fire this)
+            e.target.playVideo();
+          }
+        },
+        onError: function () {
+          setState(false);
+          playerEl.classList.add('needs-gesture');
+          armFirstInteract();
+        },
+      },
+    });
+  };
+
+  /* ── Manual play / pause button ─────────────────────────── */
+  toggleBtn.addEventListener('click', function (e) {
+    e.stopPropagation(); // don't trigger onFirstInteract
+    if (!ytPlayer || typeof ytPlayer.playVideo !== 'function') return;
+    if (playing) {
+      intentionalPause = true;
+      ytPlayer.pauseVideo();
+      setState(false);
+    } else {
+      startAudio();
+    }
+  });
+
+  /* ── Load YouTube IFrame API ────────────────────────────── */
+  var tag  = document.createElement('script');
+  tag.src  = 'https://www.youtube.com/iframe_api';
+  tag.async = true;
+  document.head.appendChild(tag);
+}());
 </script>
+
+
 </body>
 </html>

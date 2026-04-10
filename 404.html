@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page Not Found — Healthy-E</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<link rel="manifest" href="/site.webmanifest">
+<style>
+  :root {
+    --forest: #2D5016;
+    --deep-green: #1A3A0A;
+    --gold: #C4A35A;
+    --cream: #F3F8F1;
+    --charcoal: #282828;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--cream);
+    color: var(--charcoal);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+  }
+  .logo {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    margin-bottom: 2rem;
+    opacity: 0.85;
+  }
+  .code {
+    font-size: 7rem;
+    font-weight: 800;
+    color: var(--forest);
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+  .code em {
+    font-style: italic;
+    font-family: 'Instrument Serif', serif;
+    color: var(--gold);
+  }
+  .message {
+    font-size: 1.15rem;
+    color: #666;
+    margin: 1.25rem 0 2.5rem;
+    max-width: 420px;
+    line-height: 1.6;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--forest);
+    color: white;
+    padding: 14px 32px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 15px;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .btn:hover { background: var(--deep-green); transform: translateY(-2px); }
+</style>
+</head>
+<body>
+  <img src="/HealthyEatsLogo_1024x1024_transparent.png" alt="Healthy-E" class="logo">
+  <p class="code">4<em>0</em>4</p>
+  <p class="message">This page has wandered off the wellness path. Let's get you back.</p>
+  <a href="/" class="btn">← Back to Store</a>
+</body>
+</html>

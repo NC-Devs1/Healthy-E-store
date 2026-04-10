@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sustainability | Healthy-E</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="HealthyEatsLogo_1024x1024_transparent.png">
+<style>
+:root{
+  --forest:#2D5016;--deep-green:#1A3A0A;--sage:#6B8F5E;--cream:#F3F8F1;
+  --warm-tan:#B6CBB0;--coral:#D4756B;--gold:#C4A35A;--charcoal:#282828;
+  --white:#FFFFFF;--border:rgba(45,80,22,0.09);--shadow:0 2px 16px rgba(44,44,44,0.06);
+  --r:12px;--r-lg:20px;--ease:cubic-bezier(0.16,1,0.3,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);color:var(--charcoal);line-height:1.7;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+
+.topbar{background:var(--deep-green);color:var(--cream);text-align:center;padding:10px 16px;font-size:13px;font-weight:500;letter-spacing:.04em}
+.topbar span{color:var(--gold)}
+
+.navbar{background:rgba(243,248,241,0.97);border-bottom:1px solid var(--border);padding:0 clamp(1rem,4vw,3rem);height:72px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 16px rgba(44,44,44,0.06);position:sticky;top:0;z-index:100}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-logo img{height:44px;width:44px;object-fit:contain}
+.nav-logo-text{font-size:15px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--forest)}
+.back-link{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:var(--forest);padding:8px 16px;border-radius:8px;border:1.5px solid var(--forest);transition:all .2s}
+.back-link:hover{background:var(--forest);color:var(--cream)}
+
+.page-hero{background:var(--deep-green);padding:clamp(3rem,6vw,5rem) clamp(1rem,4vw,3rem);text-align:center;position:relative;overflow:hidden}
+.page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 60%,rgba(107,143,94,.2) 0%,transparent 60%);pointer-events:none}
+.page-hero .eyebrow{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.page-hero h1{font-family:'Instrument Serif',serif;font-size:clamp(2.4rem,5vw,3.6rem);color:var(--cream);margin-bottom:16px;line-height:1.15}
+.page-hero p{font-size:clamp(15px,2vw,17px);color:rgba(243,248,241,.65);max-width:540px;margin:0 auto}
+
+.layout{max-width:960px;margin:0 auto;padding:clamp(2.5rem,6vw,5rem) clamp(1rem,4vw,2rem)}
+
+.impact-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;margin-bottom:56px;box-shadow:0 2px 16px rgba(44,44,44,0.06)}
+@media(max-width:640px){.impact-bar{grid-template-columns:1fr 1fr}}
+.impact-stat{background:var(--white);padding:28px 20px;text-align:center}
+.impact-stat .num{font-family:'Instrument Serif',serif;font-size:2.2rem;color:var(--forest);display:block;line-height:1}
+.impact-stat .label{font-size:12px;font-weight:600;color:#888;letter-spacing:.06em;text-transform:uppercase;margin-top:6px}
+
+.pillar-section{margin-bottom:48px}
+.pillar-header{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.pillar-icon{width:48px;height:48px;background:rgba(45,80,22,.08);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--forest)}
+.pillar-header h2{font-family:'Instrument Serif',serif;font-size:clamp(1.4rem,2.5vw,1.9rem);color:var(--forest)}
+.pillar-section p{font-size:15px;color:#3a3a3a;margin-bottom:12px;padding-left:62px}
+@media(max-width:480px){.pillar-section p{padding-left:0}}
+.progress-row{padding-left:62px;margin:16px 0}
+@media(max-width:480px){.progress-row{padding-left:0}}
+.progress-label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;color:var(--charcoal);margin-bottom:6px}
+.progress-bar{background:rgba(45,80,22,.1);border-radius:99px;height:8px;overflow:hidden}
+.progress-fill{background:linear-gradient(90deg,var(--sage),var(--forest));height:100%;border-radius:99px}
+
+.cert-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin:40px 0}
+.cert-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px 20px;text-align:center;box-shadow:0 2px 16px rgba(44,44,44,0.06)}
+.cert-card .badge{width:48px;height:48px;border-radius:50%;background:rgba(45,80,22,.08);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:var(--forest)}
+.cert-card h3{font-size:14px;font-weight:700;color:var(--charcoal);margin-bottom:4px}
+.cert-card p{font-size:12px;color:#888;margin:0}
+
+.pledge-box{background:var(--deep-green);border-radius:var(--r-lg);padding:clamp(2rem,4vw,3rem);text-align:center;margin-top:48px}
+.pledge-box .eyebrow{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.pledge-box h2{font-family:'Instrument Serif',serif;font-size:clamp(1.5rem,3vw,2.2rem);color:var(--cream);margin-bottom:12px}
+.pledge-box p{font-size:15px;color:rgba(243,248,241,.65);max-width:500px;margin:0 auto 24px}
+.pledge-btn{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--deep-green);font-weight:700;font-size:14px;padding:14px 28px;border-radius:10px;letter-spacing:.04em;transition:all .2s}
+.pledge-btn:hover{background:#d4b46a;transform:translateY(-1px)}
+
+footer{background:var(--deep-green);color:var(--cream);padding:clamp(2rem,4vw,3rem) clamp(1rem,4vw,3rem) 0;margin-top:64px}
+.footer-bottom{max-width:1200px;margin:0 auto;padding:20px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:12px;color:rgba(245,240,232,.4)}
+.footer-bottom a{color:rgba(245,240,232,.5);transition:color .2s}
+.footer-bottom a:hover{color:var(--cream)}
+</style>
+</head>
+<body>
+
+<div class="topbar">Free shipping on orders over $75 &nbsp;·&nbsp; <span>Use code HEALTHY10 for 10% off</span></div>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">
+    <img src="HealthyEatsLogo_1024x1024_transparent.png" alt="Healthy-E Logo">
+    <span class="nav-logo-text">Healthy&#8209;E</span>
+  </a>
+  <a href="index.html" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to Store
+  </a>
+</nav>
+
+<div class="page-hero">
+  <div class="eyebrow">Sustainability</div>
+  <h1>Good for You.<br>Good for the Planet.</h1>
+  <p>Our commitment to the environment isn't a marketing pledge — it's built into every decision we make.</p>
+</div>
+
+<div class="layout">
+
+  <div class="impact-bar">
+    <div class="impact-stat">
+      <span class="num">100%</span>
+      <div class="label">Carbon-Neutral Shipping</div>
+    </div>
+    <div class="impact-stat">
+      <span class="num">47K</span>
+      <div class="label">Trees Planted</div>
+    </div>
+    <div class="impact-stat">
+      <span class="num">92%</span>
+      <div class="label">Packaging Compostable</div>
+    </div>
+    <div class="impact-stat">
+      <span class="num">1%</span>
+      <div class="label">Revenue to Reforestation</div>
+    </div>
+  </div>
+
+  <div class="pillar-section">
+    <div class="pillar-header">
+      <div class="pillar-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+      </div>
+      <h2>Regenerative Sourcing</h2>
+    </div>
+    <p>We partner exclusively with farms that practice regenerative agriculture — techniques that actively restore soil health, sequester carbon, and support local biodiversity. Before onboarding any supplier, our sourcing team conducts an on-site audit.</p>
+    <p>We don't just check a box. We build multi-year relationships with farm partners and revisit annually to verify standards are maintained — and improved.</p>
+    <div class="progress-row">
+      <div class="progress-label"><span>Certified Regenerative Partners</span><span>87%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:87%"></div></div>
+    </div>
+    <div class="progress-row">
+      <div class="progress-label"><span>Certified Organic Partners</span><span>100%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+    </div>
+  </div>
+
+  <div class="pillar-section">
+    <div class="pillar-header">
+      <div class="pillar-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      </div>
+      <h2>Carbon-Neutral Shipping</h2>
+    </div>
+    <p>Every order shipped through Healthy-E is fully carbon-offset. We calculate the emissions of each shipment based on weight, distance, and carrier mode, then purchase verified carbon credits from reforestation and renewable energy projects.</p>
+    <p>We chose not to pass this cost to you. It's built into our pricing because we believe it's the right thing to do — not an optional add-on.</p>
+    <div class="progress-row">
+      <div class="progress-label"><span>Orders Carbon-Offset</span><span>100%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+    </div>
+  </div>
+
+  <div class="pillar-section">
+    <div class="pillar-header">
+      <div class="pillar-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      </div>
+      <h2>Packaging & Waste Reduction</h2>
+    </div>
+    <p>92% of our packaging materials are home-compostable or curbside-recyclable. Our mailer bags are made from plant starch, our tissue paper is FSC-certified, and our tape is water-activated kraft paper — zero plastic in the box.</p>
+    <p>We're working toward 100% plastic-free packaging by end of 2026. The remaining 8% is limited to items that require food-grade barrier protection, for which we are actively evaluating compostable alternatives.</p>
+  </div>
+
+  <div class="cert-grid">
+    <div class="cert-card">
+      <div class="badge"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <h3>USDA Organic</h3>
+      <p>All food products certified</p>
+    </div>
+    <div class="cert-card">
+      <div class="badge"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg></div>
+      <h3>1% for the Planet</h3>
+      <p>Member since 2023</p>
+    </div>
+    <div class="cert-card">
+      <div class="badge"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+      <h3>Fair Trade Certified</h3>
+      <p>All farm partnerships</p>
+    </div>
+    <div class="cert-card">
+      <div class="badge"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+      <h3>Carbon-Neutral Certified</h3>
+      <p>All outbound shipments</p>
+    </div>
+  </div>
+
+  <div class="pledge-box">
+    <div class="eyebrow">Our Pledge</div>
+    <h2>Net Zero by 2028</h2>
+    <p>We've committed to full operational net-zero emissions by 2028 — including Scope 3 supply chain emissions. Progress reports published every quarter.</p>
+    <a href="index.html#shop" class="pledge-btn">Shop Sustainably →</a>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-bottom">
+    <span>© 2026 NC-Developer, LLC — All Rights Reserved. Healthy Eat's® is a registered trademark.</span>
+    <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a> &nbsp;·&nbsp; <a href="cookies.html">Cookies</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

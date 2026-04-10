@@ -1,4 +1,4 @@
-# ─── macOS System Files ───────────────────────────────────────────────────────
+# ─── macOS System Files ────────────────────────────────────────────────────────
 .DS_Store
 .DS_Store?
 .localized
@@ -9,11 +9,11 @@
 .LSOverride
 Icon
 
-# ─── Thumbnails ───────────────────────────────────────────────────────────────
+# ─── Thumbnails ────────────────────────────────────────────────────────────────
 ehthumbs.db
 Thumbs.db
 
-# ─── Editor & IDE ─────────────────────────────────────────────────────────────
+# ─── Editor & IDE ──────────────────────────────────────────────────────────────
 .vscode/
 .idea/
 *.suo
@@ -23,17 +23,17 @@ Thumbs.db
 *.sw?
 *~
 
-# ─── Environment & Secrets ────────────────────────────────────────────────────
+# ─── Environment & Secrets ─────────────────────────────────────────────────────
 .env
 .env.local
 .env.*.local
 credentials.json
 token.json
 
-# ─── WAT Framework Temp Files ─────────────────────────────────────────────────
+# ─── WAT Framework Temp Files ──────────────────────────────────────────────────
 .tmp/
 
-# ─── Node.js (if added later) ─────────────────────────────────────────────────
+# ─── Node.js ───────────────────────────────────────────────────────────────────
 node_modules/
 npm-debug.log*
 yarn-debug.log*
@@ -42,10 +42,20 @@ package-lock.json
 dist/
 build/
 
-# ─── Logs ─────────────────────────────────────────────────────────────────────
+# ─── Logs ──────────────────────────────────────────────────────────────────────
 *.log
 logs/
 
-# ─── OS-generated files ───────────────────────────────────────────────────────
+# ─── Screenshots (generated, not source) ───────────────────────────────────────
+temporary screenshots/*.png
+
+# ─── PDF exports (local docs, not site assets) ──────────────────────────────────
+*.pdf
+
+# ─── Dev-only scripts (local tooling, not served) ───────────────────────────────
+serve.mjs
+screenshot.mjs
+
+# ─── OS-generated files ────────────────────────────────────────────────────────
 Desktop.ini
 $RECYCLE.BIN/

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQ | Healthy-E</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="HealthyEatsLogo_1024x1024_transparent.png">
+<style>
+:root{
+  --forest:#2D5016;--deep-green:#1A3A0A;--sage:#6B8F5E;--cream:#F3F8F1;
+  --coral:#D4756B;--gold:#C4A35A;--charcoal:#282828;
+  --white:#FFFFFF;--border:rgba(45,80,22,0.09);--shadow:0 2px 16px rgba(44,44,44,0.06);
+  --r:12px;--r-lg:20px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);color:var(--charcoal);line-height:1.7;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+
+.topbar{background:var(--deep-green);color:var(--cream);text-align:center;padding:10px 16px;font-size:13px;font-weight:500;letter-spacing:.04em}
+.topbar span{color:var(--gold)}
+
+.navbar{background:rgba(243,248,241,0.97);border-bottom:1px solid var(--border);padding:0 clamp(1rem,4vw,3rem);height:72px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow);position:sticky;top:0;z-index:100}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-logo img{height:44px;width:44px;object-fit:contain}
+.nav-logo-text{font-size:15px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--forest)}
+.back-link{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:var(--forest);padding:8px 16px;border-radius:8px;border:1.5px solid var(--forest);transition:all .2s}
+.back-link:hover{background:var(--forest);color:var(--cream)}
+
+.page-hero{background:var(--deep-green);padding:clamp(3rem,6vw,5rem) clamp(1rem,4vw,3rem);text-align:center;position:relative;overflow:hidden}
+.page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 20%,rgba(196,163,90,.09) 0%,transparent 60%);pointer-events:none}
+.page-hero .eyebrow{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.page-hero h1{font-family:'Instrument Serif',serif;font-size:clamp(2.2rem,5vw,3.4rem);color:var(--cream);margin-bottom:16px}
+.page-hero p{font-size:clamp(15px,2vw,17px);color:rgba(243,248,241,.65);max-width:500px;margin:0 auto}
+
+.layout{max-width:800px;margin:0 auto;padding:clamp(2.5rem,6vw,5rem) clamp(1rem,4vw,2rem)}
+
+.category-nav{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:48px}
+.cat-btn{padding:8px 18px;border-radius:99px;border:1.5px solid var(--border);background:var(--white);font-size:13px;font-weight:600;color:var(--charcoal);cursor:pointer;transition:all .2s;font-family:inherit}
+.cat-btn:hover,.cat-btn.active{background:var(--forest);color:var(--cream);border-color:var(--forest)}
+
+.faq-group{margin-bottom:48px}
+.faq-group h2{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+
+.faq-item{border:1px solid var(--border);border-radius:var(--r);background:var(--white);box-shadow:var(--shadow);margin-bottom:10px;overflow:hidden}
+.faq-q{width:100%;text-align:left;padding:18px 20px;background:none;border:none;font-family:inherit;font-size:15px;font-weight:600;color:var(--charcoal);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;transition:color .2s}
+.faq-q:hover{color:var(--forest)}
+.faq-q svg{flex-shrink:0;transition:transform .25s cubic-bezier(0.16,1,0.3,1);color:var(--forest)}
+.faq-item.open .faq-q svg{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(0.16,1,0.3,1)}
+.faq-item.open .faq-a{max-height:600px}
+.faq-a-inner{padding:0 20px 18px;font-size:14px;color:#3a3a3a;line-height:1.75}
+.faq-a-inner a{color:var(--forest);font-weight:600;text-decoration:underline}
+
+.help-card{background:var(--deep-green);border-radius:var(--r-lg);padding:clamp(2rem,4vw,3rem);text-align:center;margin-top:48px}
+.help-card h2{font-family:'Instrument Serif',serif;font-size:clamp(1.4rem,3vw,2rem);color:var(--cream);margin-bottom:10px}
+.help-card p{font-size:15px;color:rgba(243,248,241,.65);margin-bottom:24px}
+.help-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.help-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:10px;font-size:14px;font-weight:600;transition:all .2s}
+.help-btn.primary{background:var(--gold);color:var(--deep-green)}
+.help-btn.primary:hover{background:#d4b46a}
+.help-btn.secondary{background:rgba(243,248,241,.1);color:var(--cream);border:1px solid rgba(243,248,241,.2)}
+.help-btn.secondary:hover{background:rgba(243,248,241,.18)}
+</style>
+</head>
+<body>
+
+<div class="topbar">Free shipping on orders over $75 &nbsp;·&nbsp; <span>Use code HEALTHY10 for 10% off</span></div>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">
+    <img src="HealthyEatsLogo_1024x1024_transparent.png" alt="Healthy-E Logo">
+    <span class="nav-logo-text">Healthy&#8209;E</span>
+  </a>
+  <a href="index.html" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to Store
+  </a>
+</nav>
+
+<div class="page-hero">
+  <div class="eyebrow">FAQ</div>
+  <h1>Frequently Asked Questions</h1>
+  <p>Can't find your answer? Our support team is always happy to help.</p>
+</div>
+
+<div class="layout">
+
+  <div class="category-nav">
+    <button class="cat-btn active" onclick="filterFaq('all',this)">All</button>
+    <button class="cat-btn" onclick="filterFaq('orders',this)">Orders</button>
+    <button class="cat-btn" onclick="filterFaq('shipping',this)">Shipping</button>
+    <button class="cat-btn" onclick="filterFaq('returns',this)">Returns</button>
+    <button class="cat-btn" onclick="filterFaq('products',this)">Products</button>
+    <button class="cat-btn" onclick="filterFaq('account',this)">Account</button>
+  </div>
+
+  <div class="faq-group" data-cat="orders">
+    <h2>Orders</h2>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        How do I place an order?
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">Browse our shop, select your products, and click "Add to Cart." When you're ready, proceed to checkout. We accept all major credit cards, PayPal, Apple Pay, and Google Pay.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Can I change or cancel my order after placing it?
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">You can modify or cancel your order within 1 hour of placing it by <a href="contact.html">contacting us immediately</a>. After that window, orders may have already been processed for fulfillment.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Will I receive an order confirmation?
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">Yes — you'll receive a confirmation email immediately after placing your order, and a second email with tracking information once your order ships, typically within 1–2 business days.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Do you offer gift wrapping or gift messages?
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">Yes! During checkout you can add a gift message and select eco-friendly gift wrapping (+$4.95). All gift orders ship without price receipts inside the package.</div></div>
+    </div>
+  </div>
+
+  <div class="faq-group" data-cat="shipping">
+    <h2>Shipping</h2>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        How much does shipping cost?
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">Standard shipping is $6.95 for orders under $75. Orders over $75 ship free within the contiguous US. Expedited and overnight options are available at checkout.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        How long does shipping take?
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">Standard shipping: 5–7 business days. Expedited (2-day): 2 business days. Overnight: next business day if ordered before 12 pm ET. Processing time is 1–2 business days before your order ships.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Do you ship internationally?
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">Currently we ship within the United States, Canada, and the United Kingdom. International shipping rates are calculated at checkout. Duties and import taxes are the responsibility of the recipient.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Is your shipping carbon-neutral?
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">Yes — 100% of our shipments are carbon-offset through verified reforestation and renewable energy projects. This cost is absorbed by us, not passed to you. Learn more on our <a href="sustainability.html">Sustainability page</a>.</div></div>
+    </div>
+  </div>
+
+  <div class="faq-group" data-cat="returns">
+    <h2>Returns &amp; Refunds</h2>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        What is your return policy?
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">We accept returns within 30 days of delivery for unused, unopened items in original packaging. Food and supplement products cannot be returned once opened for safety reasons. See our full <a href="shipping-returns.html">Shipping & Returns policy</a>.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        How do I start a return?
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">Email us at <a href="mailto:returns@healthy-e.store">returns@healthy-e.store</a> with your order number and reason for return. We'll send a prepaid return label within 1 business day.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        When will I receive my refund?
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">Refunds are processed within 3–5 business days of receiving your return. Your bank may take an additional 2–5 business days to post the credit to your account.</div></div>
+    </div>
+  </div>
+
+  <div class="faq-group" data-cat="products">
+    <h2>Products</h2>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Are your products certified organic?
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">Yes — all food and supplement products are USDA Certified Organic. Our yoga apparel uses GOTS-certified organic cotton and recycled materials. Certifications are listed on every product page.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Where are your products sourced?
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">Our matcha comes from family farms in Uji, Japan. Superfoods are sourced from regenerative farms in Peru, Costa Rica, and Ethiopia. All farm partners are Fair Trade certified and visited annually by our sourcing team.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Do you offer subscription discounts?
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">Yes! Subscribe & Save is available on select products for 15% off every reorder. You control the delivery frequency (every 2, 4, 6, or 8 weeks) and can pause or cancel any time with no fees.</div></div>
+    </div>
+  </div>
+
+  <div class="faq-group" data-cat="account">
+    <h2>Account &amp; Payments</h2>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Do I need an account to shop?
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">No — guest checkout is fully supported. Creating an account lets you track orders, save addresses, manage subscriptions, and earn loyalty points on every purchase.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        What payment methods do you accept?
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">We accept Visa, Mastercard, American Express, Discover, PayPal, Apple Pay, Google Pay, and Shop Pay. All transactions are encrypted and secured by Stripe.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Is my payment information secure?
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">Absolutely. We never store your full card number — all payment processing is handled by Stripe, a PCI-DSS Level 1 certified payment processor. Your data is encrypted end-to-end.</div></div>
+    </div>
+  </div>
+
+  <div class="help-card">
+    <h2>Still have questions?</h2>
+    <p>Our support team is here to help, Monday–Friday 9 am–5 pm ET.</p>
+    <div class="help-btns">
+      <a href="contact.html" class="help-btn primary">Contact Us</a>
+      <a href="shipping-returns.html" class="help-btn secondary">Shipping & Returns</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-bottom">
+    <span>© 2026 NC-Developer, LLC — All Rights Reserved. Healthy Eat's® is a registered trademark.</span>
+    <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a> &nbsp;·&nbsp; <a href="cookies.html">Cookies</a></span>
+  </div>
+</footer>
+
+<script>
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+function filterFaq(cat, btn) {
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.faq-group').forEach(g => {
+    g.style.display = (cat === 'all' || g.dataset.cat === cat) ? '' : 'none';
+  });
+}
+</script>
+
+</body>
+</html>

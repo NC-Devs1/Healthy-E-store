@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Block dev / temp artefacts
+Disallow: /node_modules/
+Disallow: /.tmp/
+Disallow: /temporary screenshots/
+Disallow: /.git/
+
+Sitemap: https://healthy-e.store/sitemap.xml

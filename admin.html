@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Healthy-E Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --forest:#2D5016;--deep-green:#1A3A0A;--sage:#6B8F5E;--cream:#F3F8F1;
+  --gold:#C4A35A;--charcoal:#282828;--coral:#D4756B;
+  --sb-w:224px;--top-h:60px;
+  --bd:#e5e7eb;--bd2:#f3f4f6;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
+  --shadow-md:0 4px 12px rgba(0,0,0,.08);
+  --r:8px;--r-sm:6px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#f3f4f6;color:var(--charcoal);font-size:14px}
+a{text-decoration:none;color:inherit}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+input,select,textarea{font-family:inherit}
+ul{list-style:none}
+svg{display:block;flex-shrink:0}
+
+/* ── GATE ── */
+#gate{position:fixed;inset:0;background:var(--deep-green);display:flex;align-items:center;justify-content:center;z-index:9999}
+.gate-card{background:#fff;border-radius:16px;padding:40px 44px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,.25);text-align:center}
+.gate-logo{height:64px;width:64px;object-fit:contain;margin:0 auto 16px}
+.gate-title{font-size:1.4rem;font-weight:800;color:var(--deep-green);margin-bottom:4px}
+.gate-sub{font-size:13px;color:#888;margin-bottom:28px}
+.gate-field{text-align:left;margin-bottom:16px}
+.gate-field label{display:block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#555;margin-bottom:6px}
+.pw-wrap{position:relative}
+.pw-wrap input{width:100%;padding:12px 44px 12px 14px;border:1.5px solid var(--bd);border-radius:var(--r);font-size:15px;outline:none;transition:border-color .2s}
+.pw-wrap input:focus{border-color:var(--forest)}
+.pw-eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#aaa;padding:4px;cursor:pointer}
+.gate-error{background:#fef2f2;border:1px solid #fecaca;border-radius:var(--r-sm);padding:10px 14px;color:#dc2626;font-size:13px;margin-bottom:12px;text-align:left}
+.gate-btn{width:100%;padding:13px;background:var(--forest);color:#fff;font-size:15px;font-weight:700;border-radius:var(--r);letter-spacing:.04em;transition:background .2s;margin-top:4px}
+.gate-btn:hover{background:var(--deep-green)}
+.gate-hint{font-size:12px;color:#aaa;margin-top:16px}
+
+/* ── APP SHELL ── */
+#app{display:none;height:100vh;overflow:hidden}
+
+/* ── SIDEBAR ── */
+.sidebar{width:var(--sb-w);background:var(--deep-green);display:flex;flex-direction:column;height:100vh;flex-shrink:0;overflow-y:auto;overflow-x:hidden}
+.sb-brand{display:flex;align-items:center;gap:10px;padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,.07)}
+.sb-brand img{width:36px;height:36px;object-fit:contain;border-radius:8px;background:rgba(255,255,255,.1);padding:3px}
+.sb-store-name{font-size:13px;font-weight:800;color:#fff;letter-spacing:.02em}
+.sb-plan{font-size:11px;color:var(--gold);font-weight:600}
+.sb-nav{flex:1;padding:12px 8px}
+.nav-section-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);padding:14px 10px 6px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--r-sm);color:rgba(255,255,255,.65);font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;margin-bottom:1px;position:relative}
+.nav-item:hover{background:rgba(255,255,255,.07);color:#fff}
+.nav-item.active{background:rgba(255,255,255,.12);color:#fff;font-weight:600}
+.nav-item svg{opacity:.7;flex-shrink:0}
+.nav-item.active svg{opacity:1}
+.nav-badge{margin-left:auto;background:var(--coral);color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:99px;min-width:18px;text-align:center}
+.sb-divider{height:1px;background:rgba(255,255,255,.07);margin:8px 10px}
+.sb-footer{padding:12px 8px 16px;border-top:1px solid rgba(255,255,255,.07)}
+.sb-user{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--r-sm);margin-bottom:4px}
+.sb-avatar{width:30px;height:30px;border-radius:50%;background:var(--gold);color:var(--deep-green);font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sb-user-name{font-size:12px;font-weight:700;color:#fff}
+.sb-user-role{font-size:11px;color:rgba(255,255,255,.45)}
+.logout-btn{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:var(--r-sm);color:rgba(255,255,255,.45);font-size:12px;font-weight:500;width:100%;transition:all .15s}
+.logout-btn:hover{background:rgba(255,255,255,.07);color:rgba(255,255,255,.8)}
+
+/* ── MAIN ── */
+.main{flex:1;display:flex;flex-direction:column;min-width:0;height:100vh;overflow:hidden}
+
+/* ── TOPBAR ── */
+.topbar{height:var(--top-h);background:#fff;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;gap:16px}
+.page-title{font-size:16px;font-weight:700;color:var(--charcoal)}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.date-btn{display:flex;align-items:center;gap:6px;padding:7px 12px;background:#f9fafb;border:1px solid var(--bd);border-radius:var(--r-sm);font-size:13px;font-weight:500;color:#374151;cursor:pointer;transition:all .15s}
+.date-btn:hover{border-color:#9ca3af}
+.icon-btn{width:34px;height:34px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;color:#6b7280;transition:all .15s}
+.icon-btn:hover{background:#f3f4f6;color:var(--charcoal)}
+.refresh-info{font-size:12px;color:#9ca3af;white-space:nowrap}
+.store-link{display:flex;align-items:center;gap:5px;padding:7px 12px;background:var(--forest);color:#fff;border-radius:var(--r-sm);font-size:13px;font-weight:600;transition:background .2s}
+.store-link:hover{background:var(--deep-green)}
+
+/* ── PANELS ── */
+.panels{flex:1;overflow-y:auto;overflow-x:hidden}
+.panel{display:none;padding:24px;max-width:1280px;margin:0 auto}
+.panel.active{display:block}
+.panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.panel-title{font-size:18px;font-weight:800;color:var(--charcoal)}
+.panel-sub{font-size:13px;color:#6b7280;margin-top:2px}
+
+/* ── CARDS ── */
+.card{background:#fff;border:1px solid var(--bd);border-radius:var(--r);box-shadow:var(--shadow)}
+.card-header{padding:16px 20px;border-bottom:1px solid var(--bd2);display:flex;align-items:center;justify-content:space-between}
+.card-title{font-size:13px;font-weight:700;color:var(--charcoal)}
+.card-body{padding:20px}
+
+/* ── KPI GRID ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+.kpi-card{background:#fff;border:1px solid var(--bd);border-radius:var(--r);padding:18px 20px;box-shadow:var(--shadow)}
+.kpi-label{font-size:12px;font-weight:600;color:#6b7280;letter-spacing:.03em;margin-bottom:8px}
+.kpi-value{font-size:1.6rem;font-weight:800;color:var(--charcoal);line-height:1}
+.kpi-change{font-size:12px;margin-top:6px;color:#6b7280}
+.kpi-change.up{color:#10b981}
+.kpi-change.down{color:var(--coral)}
+
+/* ── CHART CARDS ── */
+.chart-card{background:#fff;border:1px solid var(--bd);border-radius:var(--r);margin-bottom:20px;box-shadow:var(--shadow)}
+.chart-header{padding:18px 20px 12px;display:flex;align-items:flex-start;justify-content:space-between}
+.chart-title{font-size:13px;font-weight:700;color:#374151}
+.chart-val{font-size:1.5rem;font-weight:800;color:var(--charcoal);margin-top:4px}
+.chart-legend{display:flex;gap:16px;padding:0 20px 10px;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:#6b7280}
+.legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.chart-wrap{padding:0 20px 20px;height:200px;position:relative}
+
+/* ── BREAKDOWN TABLE ── */
+.breakdown-table{width:100%;border-collapse:collapse}
+.breakdown-table th{padding:10px 16px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#9ca3af;border-bottom:1px solid var(--bd)}
+.breakdown-table td{padding:12px 16px;font-size:13px;color:#374151;border-bottom:1px solid var(--bd2)}
+.breakdown-table tr:last-child td{border-bottom:none;font-weight:700;color:var(--charcoal)}
+.breakdown-table td:last-child,.breakdown-table th:last-child{text-align:right}
+
+/* ── GENERAL TABLE ── */
+.data-table{width:100%;border-collapse:collapse}
+.data-table th{padding:10px 16px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#9ca3af;border-bottom:1px solid var(--bd);background:#f9fafb}
+.data-table td{padding:12px 16px;font-size:13px;color:#374151;border-bottom:1px solid var(--bd2)}
+.data-table tbody tr:hover td{background:#f9fafb}
+.data-table td:last-child,.data-table th:last-child{text-align:right}
+
+/* ── EMPTY STATE ── */
+.empty-state{padding:48px 24px;text-align:center}
+.empty-icon{width:52px;height:52px;background:var(--bd2);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;color:#9ca3af}
+.empty-title{font-size:14px;font-weight:700;color:#374151;margin-bottom:6px}
+.empty-sub{font-size:13px;color:#9ca3af}
+
+/* ── NO DATA ── */
+.no-data{padding:24px;text-align:center;font-size:13px;color:#9ca3af;background:#f9fafb;border-radius:var(--r-sm)}
+
+/* ── PERF METRICS ── */
+.perf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+.perf-card{background:#fff;border:1px solid var(--bd);border-radius:var(--r);padding:20px;box-shadow:var(--shadow)}
+.perf-label{font-size:12px;font-weight:700;color:#6b7280;letter-spacing:.04em;margin-bottom:10px;text-transform:uppercase}
+.perf-val{font-size:1.8rem;font-weight:800;color:var(--charcoal);line-height:1;margin-bottom:6px}
+.perf-unit{font-size:13px;color:#9ca3af;font-weight:500;margin-left:2px}
+.perf-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:700}
+.perf-badge.good{background:#dcfce7;color:#16a34a}
+.perf-badge.ok{background:#fef3c7;color:#d97706}
+.perf-badge.poor{background:#fee2e2;color:#dc2626}
+.perf-progress{margin-top:10px;background:var(--bd2);border-radius:99px;height:6px;overflow:hidden}
+.perf-fill{height:100%;border-radius:99px;background:var(--forest)}
+.perf-sub{font-size:11px;color:#9ca3af;margin-top:6px}
+
+/* ── DEVICE WIDGET ── */
+.device-grid{display:grid;grid-template-columns:160px 1fr;gap:24px;align-items:center}
+.device-chart-wrap{height:140px;position:relative}
+.device-table{width:100%}
+.device-table tr td{padding:8px 0;font-size:13px;border-bottom:1px solid var(--bd2)}
+.device-table tr:last-child td{border-bottom:none}
+.device-dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:8px}
+.device-count{font-weight:700;color:var(--charcoal);text-align:right}
+
+/* ── THEME CARDS ── */
+.theme-section-label{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6b7280;margin:24px 0 12px}
+.theme-card{background:#fff;border:1px solid var(--bd);border-radius:var(--r);padding:16px 20px;display:flex;align-items:center;gap:16px;margin-bottom:12px;box-shadow:var(--shadow);transition:box-shadow .2s}
+.theme-card:hover{box-shadow:var(--shadow-md)}
+.theme-thumb{width:80px;height:56px;border-radius:6px;background:linear-gradient(135deg,var(--cream),#e8f0e4);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;color:var(--sage);flex-shrink:0;font-size:11px;font-weight:700;text-align:center;letter-spacing:.06em;text-transform:uppercase;padding:4px}
+.theme-thumb.peak{background:linear-gradient(135deg,#f0f4f8,#dce4ec)}
+.theme-info{flex:1}
+.theme-name{font-size:15px;font-weight:700;color:var(--charcoal);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.theme-meta{font-size:12px;color:#9ca3af}
+.theme-tag{display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600}
+.theme-tag.current{background:#dcfce7;color:#15803d}
+.theme-tag.trial{background:#fef3c7;color:#d97706}
+.theme-tag.attention{background:#fee2e2;color:#dc2626}
+.theme-update{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--forest);font-weight:600;margin-top:6px;cursor:pointer}
+.theme-actions{display:flex;gap:8px}
+.btn-sm{padding:7px 14px;border-radius:var(--r-sm);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-outline{background:#fff;border:1px solid var(--bd);color:#374151}
+.btn-outline:hover{border-color:#9ca3af;background:#f9fafb}
+.btn-primary{background:var(--forest);color:#fff;border:1px solid var(--forest)}
+.btn-primary:hover{background:var(--deep-green)}
+.btn-gold{background:var(--gold);color:var(--deep-green);border:1px solid var(--gold);font-weight:700}
+.btn-gold:hover{background:#d4b46a}
+
+/* ── SETTINGS ── */
+.settings-layout{display:grid;grid-template-columns:220px 1fr;gap:24px;align-items:start}
+.settings-nav{background:#fff;border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);position:sticky;top:0}
+.settings-nav-item{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;font-size:13px;font-weight:500;color:#374151;border-bottom:1px solid var(--bd2);cursor:pointer;transition:background .15s}
+.settings-nav-item:last-child{border-bottom:none}
+.settings-nav-item:hover{background:#f9fafb;color:var(--forest)}
+.settings-nav-item.active{background:rgba(45,80,22,.06);color:var(--forest);font-weight:700}
+.settings-content{background:#fff;border:1px solid var(--bd);border-radius:var(--r);padding:28px 32px;box-shadow:var(--shadow);min-height:500px}
+.settings-content h2{font-size:16px;font-weight:800;color:var(--charcoal);margin-bottom:4px}
+.settings-content .sub{font-size:13px;color:#6b7280;margin-bottom:28px}
+.field-group{margin-bottom:24px}
+.field-group label{display:block;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#374151;margin-bottom:6px}
+.field-group input,.field-group select,.field-group textarea{width:100%;padding:10px 12px;border:1.5px solid var(--bd);border-radius:var(--r-sm);font-family:inherit;font-size:14px;color:var(--charcoal);outline:none;transition:border-color .2s;background:#fff}
+.field-group input:focus,.field-group select:focus,.field-group textarea:focus{border-color:var(--forest)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.save-btn{padding:10px 22px;background:var(--forest);color:#fff;border-radius:var(--r-sm);font-size:13px;font-weight:700;cursor:pointer;transition:background .2s}
+.save-btn:hover{background:var(--deep-green)}
+
+/* ── CONVERSION FUNNEL ── */
+.funnel-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.funnel-step{background:#f9fafb;border:1px solid var(--bd);border-radius:var(--r);padding:16px;text-align:center}
+.funnel-pct{font-size:1.1rem;font-weight:800;color:var(--charcoal)}
+.funnel-label{font-size:11px;color:#9ca3af;margin:4px 0}
+.funnel-sub-pct{font-size:11px;font-weight:700;color:var(--sage)}
+.funnel-count{font-size:13px;font-weight:700;color:#374151}
+
+/* ── COHORT ── */
+.cohort-table{width:100%;border-collapse:collapse;font-size:12px}
+.cohort-table th,.cohort-table td{padding:8px 12px;text-align:center;border:1px solid var(--bd2)}
+.cohort-table th{background:#f9fafb;font-weight:700;color:#9ca3af;font-size:11px}
+.cohort-cell{color:#9ca3af}
+.cohort-cell.heat-0{background:#f9fafb}
+
+/* ── ORDERS PANEL ── */
+.order-badge{display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600}
+.order-badge.paid{background:#dcfce7;color:#15803d}
+.order-badge.pending{background:#fef3c7;color:#d97706}
+.order-badge.unfulfilled{background:#fee2e2;color:#dc2626}
+
+/* ── PRODUCTS PANEL ── */
+.product-row-img{width:36px;height:36px;border-radius:6px;object-fit:cover;background:var(--bd2);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:10px;color:#9ca3af;flex-shrink:0}
+
+/* ── QUICK ACTIONS ── */
+.quick-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.quick-action-btn{background:#fff;border:1px solid var(--bd);border-radius:var(--r);padding:16px;text-align:center;cursor:pointer;transition:all .2s;box-shadow:var(--shadow)}
+.quick-action-btn:hover{border-color:var(--forest);box-shadow:var(--shadow-md)}
+.qa-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
+.qa-label{font-size:12px;font-weight:600;color:#374151}
+
+/* ── ACTIVITY FEED ── */
+.activity-item{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--bd2)}
+.activity-item:last-child{border-bottom:none}
+.activity-dot{width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0}
+.activity-text{font-size:13px;color:#374151}
+.activity-time{font-size:11px;color:#9ca3af;margin-top:3px}
+
+/* ── LLC CREDENTIALS ── */
+.llc-box{background:#f9fafb;border:1px solid var(--bd);border-radius:var(--r);padding:24px 28px;margin-bottom:20px;display:flex;flex-direction:column;gap:14px}
+.llc-row-header{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:1px solid var(--bd)}
+.llc-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#9ca3af;margin-bottom:4px}
+.llc-entity{font-size:15px;font-weight:800;color:var(--charcoal)}
+.llc-value{font-size:14px;font-weight:600;color:var(--charcoal)}
+.llc-value-domain{font-size:14px;font-weight:600;color:var(--forest)}
+.llc-row-footer{padding-top:14px;border-top:1px solid var(--bd)}
+
+/* ── SCROLLBAR ── */
+.panels::-webkit-scrollbar{width:4px}
+.panels::-webkit-scrollbar-track{background:transparent}
+.panels::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:99px}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:99px}
+</style>
+</head>
+<body>
+
+<!-- ══════════ GATE ══════════ -->
+<div id="gate">
+  <div class="gate-card">
+    <img src="HealthyEatsLogo_1024x1024_transparent.png" alt="Healthy-E" class="gate-logo">
+    <div class="gate-title">Healthy-E Admin</div>
+    <div class="gate-sub">Owner access only. Enter your password to continue.</div>
+    <form id="loginForm">
+      <div class="gate-field">
+        <label>Password</label>
+        <div class="pw-wrap">
+          <input type="password" id="pw" placeholder="Enter admin password" autocomplete="current-password">
+          <button type="button" class="pw-eye" onclick="togglePw()">
+            <svg id="eyeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+      </div>
+      <div id="loginError" style="display:none" class="gate-error">Incorrect password. Try again.</div>
+      <button type="submit" class="gate-btn">Sign In →</button>
+    </form>
+  </div>
+</div>
+
+<!-- ══════════ APP ══════════ -->
+<div id="app" style="display:none;flex-direction:row">
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar">
+    <div class="sb-brand">
+      <img src="HealthyEatsLogo_1024x1024_transparent.png" alt="Logo">
+      <div>
+        <div class="sb-store-name">Healthy-E</div>
+        <div class="sb-plan">Basic Plan · Active</div>
+      </div>
+    </div>
+
+    <nav class="sb-nav">
+      <div class="nav-section-label">Store</div>
+      <div class="nav-item active" onclick="navTo('overview',this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        <span>Home</span>
+      </div>
+      <div class="nav-item" onclick="navTo('orders',this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span>Orders</span>
+        <span class="nav-badge">0</span>
+      </div>
+      <div class="nav-item" onclick="navTo('products',this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        <span>Products</span>
+      </div>
+      <div class="nav-item" onclick="navTo('customers',this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span>Customers</span>
+      </div>
+      <div class="nav-item" onclick="navTo('analytics',this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        <span>Analytics</span>
+      </div>
+      <div class="nav-item" onclick="navTo('discounts',this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <span>Discounts</span>
+      </div>
+      <div class="nav-item" onclick="navTo('marketing',this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+        <span>Marketing</span>
+      </div>
+
+      <div class="sb-divider"></div>
+      <div class="nav-section-label">Channels</div>
+      <div class="nav-item" onclick="navTo('themes',this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        <span>Online Store</span>
+      </div>
+
+      <div class="sb-divider"></div>
+      <div class="nav-item" onclick="navTo('settings',this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>Settings</span>
+      </div>
+    </nav>
+
+    <div class="sb-footer">
+      <div class="sb-user">
+        <div class="sb-avatar">N</div>
+        <div>
+          <div class="sb-user-name">Neeka C.</div>
+          <div class="sb-user-role">Owner</div>
+        </div>
+      </div>
+      <button class="logout-btn" onclick="logout()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sign out
+      </button>
+    </div>
+  </aside>
+
+  <!-- ── MAIN ── -->
+  <div class="main">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <span class="page-title" id="pageTitle">Home</span>
+      </div>
+      <div class="topbar-right">
+        <span class="refresh-info" id="refreshInfo">Last refreshed: 4:48 PM</span>
+        <button class="date-btn" id="dateBtn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span id="dateRangeLabel">Apr 9 – Apr 10, 2026</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <button class="icon-btn" title="Notifications">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </button>
+        <a href="index.html" target="_blank" class="store-link">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          View Store
+        </a>
+      </div>
+    </header>
+
+    <!-- ══ PANELS ══ -->
+    <main class="panels">
+
+      <!-- ─── OVERVIEW ─── -->
+      <section id="panel-overview" class="panel active">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Good afternoon, Neeka</div>
+            <div class="panel-sub">Here's what's happening with your store today.</div>
+          </div>
+          <button class="btn-sm btn-primary" onclick="navTo('products',document.querySelector('[onclick*=products]'))">+ Add Product</button>
+        </div>
+
+        <div class="quick-actions">
+          <div class="quick-action-btn" onclick="navTo('orders',document.querySelectorAll('.nav-item')[1])">
+            <div class="qa-icon" style="background:#dcfce7"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
+            <div class="qa-label">Manage Orders</div>
+          </div>
+          <div class="quick-action-btn" onclick="navTo('products',document.querySelectorAll('.nav-item')[2])">
+            <div class="qa-icon" style="background:#fef3c7"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div>
+            <div class="qa-label">Add Product</div>
+          </div>
+          <div class="quick-action-btn" onclick="navTo('analytics',document.querySelectorAll('.nav-item')[4])">
+            <div class="qa-icon" style="background:#ede9fe"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+            <div class="qa-label">View Analytics</div>
+          </div>
+          <div class="quick-action-btn" onclick="navTo('discounts',document.querySelectorAll('.nav-item')[5])">
+            <div class="qa-icon" style="background:#fee2e2"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+            <div class="qa-label">Create Discount</div>
+          </div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-label">Total Sales (Today)</div>
+            <div class="kpi-value">$0.00</div>
+            <div class="kpi-change">No sales yet</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Orders</div>
+            <div class="kpi-value">0</div>
+            <div class="kpi-change">0 unfulfilled</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Sessions Today</div>
+            <div class="kpi-value">4</div>
+            <div class="kpi-change up">↑ +4 vs yesterday</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Conversion Rate</div>
+            <div class="kpi-value">0%</div>
+            <div class="kpi-change">0 of 4 sessions converted</div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+          <div class="card">
+            <div class="card-header"><span class="card-title">Recent Orders</span></div>
+            <div class="empty-state">
+              <div class="empty-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg></div>
+              <div class="empty-title">No orders yet</div>
+              <div class="empty-sub">When customers place orders, they'll appear here.</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">Recent Activity</span></div>
+            <div class="card-body" style="padding:0">
+              <div class="activity-item" style="padding:14px 20px">
+                <div class="activity-dot" style="background:var(--forest)"></div>
+                <div>
+                  <div class="activity-text">Store went live — <strong>healthy-e.store</strong></div>
+                  <div class="activity-time">Apr 10, 2026 · 12:00 PM</div>
+                </div>
+              </div>
+              <div class="activity-item" style="padding:14px 20px">
+                <div class="activity-dot" style="background:var(--gold)"></div>
+                <div>
+                  <div class="activity-text">Theme <strong>Flora</strong> set as live theme</div>
+                  <div class="activity-time">Nov 17, 2025 · 8:03 PM</div>
+                </div>
+              </div>
+              <div class="activity-item" style="padding:14px 20px;border-bottom:none">
+                <div class="activity-dot" style="background:var(--sage)"></div>
+                <div>
+                  <div class="activity-text">Privacy & Terms pages published</div>
+                  <div class="activity-time">Nov 17, 2025 · 7:48 PM</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── ORDERS ─── -->
+      <section id="panel-orders" class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Orders</div>
+          <button class="btn-sm btn-primary">Export</button>
+        </div>
+        <div class="card">
+          <div class="card-header" style="gap:12px">
+            <div style="display:flex;gap:8px">
+              <button class="btn-sm btn-outline" style="background:var(--forest);color:#fff">All (0)</button>
+              <button class="btn-sm btn-outline">Unfulfilled (0)</button>
+              <button class="btn-sm btn-outline">Unpaid (0)</button>
+            </div>
+            <input type="text" placeholder="Search orders…" style="padding:7px 12px;border:1px solid var(--bd);border-radius:var(--r-sm);font-family:inherit;font-size:13px;outline:none;width:220px">
+          </div>
+          <div class="empty-state">
+            <div class="empty-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
+            <div class="empty-title">No orders found</div>
+            <div class="empty-sub">When customers purchase from your store, orders will appear here.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── PRODUCTS ─── -->
+      <section id="panel-products" class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Products</div>
+          <button class="btn-sm btn-primary">+ Add product</button>
+        </div>
+        <div class="card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Status</th>
+                <th>Inventory</th>
+                <th>Category</th>
+                <th>Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div style="display:flex;align-items:center;gap:10px"><div style="width:36px;height:36px;border-radius:6px;background:#e8f0e4;border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--sage)">IMG</div><span style="font-weight:600">Ceremonial Matcha Powder</span></div></td>
+                <td><span class="order-badge paid">Active</span></td>
+                <td>In stock</td>
+                <td>Superfoods</td>
+                <td>$28.00</td>
+              </tr>
+              <tr>
+                <td><div style="display:flex;align-items:center;gap:10px"><div style="width:36px;height:36px;border-radius:6px;background:#e8f0e4;border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--sage)">IMG</div><span style="font-weight:600">Organic Spirulina</span></div></td>
+                <td><span class="order-badge paid">Active</span></td>
+                <td>In stock</td>
+                <td>Superfoods</td>
+                <td>$24.00</td>
+              </tr>
+              <tr>
+                <td><div style="display:flex;align-items:center;gap:10px"><div style="width:36px;height:36px;border-radius:6px;background:#e8f0e4;border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--sage)">IMG</div><span style="font-weight:600">Raw Cashews 500g</span></div></td>
+                <td><span class="order-badge paid">Active</span></td>
+                <td>In stock</td>
+                <td>Nuts &amp; Fruits</td>
+                <td>$18.00</td>
+              </tr>
+              <tr>
+                <td><div style="display:flex;align-items:center;gap:10px"><div style="width:36px;height:36px;border-radius:6px;background:#e8f0e4;border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--sage)">IMG</div><span style="font-weight:600">Cork Yoga Mat</span></div></td>
+                <td><span class="order-badge paid">Active</span></td>
+                <td>In stock</td>
+                <td>Equipment</td>
+                <td>$85.00</td>
+              </tr>
+              <tr>
+                <td><div style="display:flex;align-items:center;gap:10px"><div style="width:36px;height:36px;border-radius:6px;background:#e8f0e4;border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--sage)">IMG</div><span style="font-weight:600">Bamboo Yoga Leggings</span></div></td>
+                <td><span class="order-badge paid">Active</span></td>
+                <td>In stock</td>
+                <td>Yoga Apparel</td>
+                <td>$65.00</td>
+              </tr>
+              <tr>
+                <td><div style="display:flex;align-items:center;gap:10px"><div style="width:36px;height:36px;border-radius:6px;background:#e8f0e4;border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--sage)">IMG</div><span style="font-weight:600">Himalayan Pink Salt</span></div></td>
+                <td><span class="order-badge paid">Active</span></td>
+                <td>In stock</td>
+                <td>Superfoods</td>
+                <td>$12.00</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ─── CUSTOMERS ─── -->
+      <section id="panel-customers" class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Customers</div>
+          <button class="btn-sm btn-primary">Export</button>
+        </div>
+        <div class="card">
+          <div class="empty-state">
+            <div class="empty-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+            <div class="empty-title">No customers yet</div>
+            <div class="empty-sub">Customer accounts will appear here once they place an order.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── ANALYTICS ─── -->
+      <section id="panel-analytics" class="panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Analytics</div>
+            <div class="panel-sub">Apr 9 – Apr 10, 2026 · Last refreshed: 4:48 PM</div>
+          </div>
+          <button class="btn-sm btn-outline">Export</button>
+        </div>
+
+        <!-- KPIs -->
+        <div class="kpi-grid" style="margin-bottom:20px">
+          <div class="kpi-card"><div class="kpi-label">Gross Sales</div><div class="kpi-value">$0</div><div class="kpi-change">vs $0 prev period</div></div>
+          <div class="kpi-card"><div class="kpi-label">Returning Customer Rate</div><div class="kpi-value">0%</div><div class="kpi-change">No returning customers</div></div>
+          <div class="kpi-card"><div class="kpi-label">Orders Fulfilled</div><div class="kpi-value">0</div><div class="kpi-change">0 orders total</div></div>
+          <div class="kpi-card"><div class="kpi-label">Orders</div><div class="kpi-value">0</div><div class="kpi-change">0 pending fulfillment</div></div>
+        </div>
+
+        <!-- Total Sales Over Time -->
+        <div class="chart-card" style="margin-bottom:20px">
+          <div class="chart-header">
+            <div><div class="chart-title">Total sales over time</div><div class="chart-val">$0.00</div></div>
+          </div>
+          <div class="chart-legend">
+            <div class="legend-item"><div class="legend-dot" style="background:var(--forest)"></div>Apr 10, 2026</div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>Apr 9, 2026</div>
+          </div>
+          <div class="chart-wrap"><canvas id="salesChart"></canvas></div>
+        </div>
+
+        <!-- Sales Breakdown -->
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-header"><span class="card-title">Total sales breakdown</span></div>
+          <table class="breakdown-table">
+            <thead><tr><th>Metric</th><th>Amount</th></tr></thead>
+            <tbody>
+              <tr><td>Gross sales</td><td>$0.00</td></tr>
+              <tr><td>Discounts</td><td>$0.00</td></tr>
+              <tr><td>Returns</td><td>$0.00</td></tr>
+              <tr><td>Net sales</td><td>$0.00</td></tr>
+              <tr><td>Shipping charges</td><td>$0.00</td></tr>
+              <tr><td>Return fees</td><td>$0.00</td></tr>
+              <tr><td>Taxes</td><td>$0.00</td></tr>
+              <tr><td><strong>Total sales</strong></td><td><strong>$0.00</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Sessions Over Time -->
+        <div class="chart-card" style="margin-bottom:20px">
+          <div class="chart-header">
+            <div><div class="chart-title">Sessions over time</div><div class="chart-val">4</div></div>
+          </div>
+          <div class="chart-legend">
+            <div class="legend-item"><div class="legend-dot" style="background:var(--forest)"></div>Apr 10, 2026</div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>Apr 9, 2026</div>
+          </div>
+          <div class="chart-wrap"><canvas id="sessionsChart"></canvas></div>
+        </div>
+
+        <!-- Sales by channel -->
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-header"><span class="card-title">Total sales by sales channel</span></div>
+          <div class="no-data">No data for this date range</div>
+        </div>
+
+        <!-- AOV -->
+        <div class="chart-card" style="margin-bottom:20px">
+          <div class="chart-header">
+            <div><div class="chart-title">Average order value over time</div><div class="chart-val">$0.00</div></div>
+          </div>
+          <div class="chart-legend">
+            <div class="legend-item"><div class="legend-dot" style="background:var(--forest)"></div>Apr 10, 2026</div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>Apr 9, 2026</div>
+          </div>
+          <div class="chart-wrap"><canvas id="aovChart"></canvas></div>
+        </div>
+
+        <!-- Conversion Rate -->
+        <div class="chart-card" style="margin-bottom:20px">
+          <div class="chart-header">
+            <div><div class="chart-title">Conversion rate over time</div><div class="chart-val">0%</div></div>
+          </div>
+          <div class="chart-legend">
+            <div class="legend-item"><div class="legend-dot" style="background:var(--forest)"></div>Apr 10, 2026</div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>Apr 9, 2026</div>
+          </div>
+          <div class="chart-wrap"><canvas id="crChart"></canvas></div>
+        </div>
+
+        <!-- Conversion Funnel -->
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-header"><span class="card-title">Conversion rate breakdown</span><span style="font-size:1.1rem;font-weight:800;color:var(--charcoal)">0%</span></div>
+          <div class="card-body">
+            <div class="funnel-grid">
+              <div class="funnel-step">
+                <div class="funnel-pct">100%</div>
+                <div class="funnel-label">Sessions</div>
+                <div class="funnel-sub-pct">100%</div>
+                <div class="funnel-count">4</div>
+              </div>
+              <div class="funnel-step">
+                <div class="funnel-pct">0%</div>
+                <div class="funnel-label">Added to cart</div>
+                <div class="funnel-sub-pct">0%</div>
+                <div class="funnel-count">0</div>
+              </div>
+              <div class="funnel-step">
+                <div class="funnel-pct">0%</div>
+                <div class="funnel-label">Reached checkout</div>
+                <div class="funnel-sub-pct">0%</div>
+                <div class="funnel-count">0</div>
+              </div>
+              <div class="funnel-step">
+                <div class="funnel-pct">0%</div>
+                <div class="funnel-label">Completed order</div>
+                <div class="funnel-sub-pct">0%</div>
+                <div class="funnel-count">0</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- By Product -->
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-header"><span class="card-title">Total sales by product</span></div>
+          <div class="no-data">No data for this date range</div>
+        </div>
+
+        <!-- Sessions by device -->
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-header"><span class="card-title">Sessions by device type</span><span style="font-weight:800;color:var(--charcoal)">4</span></div>
+          <div class="card-body">
+            <div class="device-grid">
+              <div class="device-chart-wrap"><canvas id="deviceChart"></canvas></div>
+              <table class="device-table">
+                <tr>
+                  <td><span class="device-dot" style="background:var(--forest)"></span>Desktop</td>
+                  <td class="device-count">4</td>
+                  <td style="color:#9ca3af;font-size:12px">100%</td>
+                </tr>
+                <tr>
+                  <td><span class="device-dot" style="background:var(--gold)"></span>Mobile</td>
+                  <td class="device-count">0</td>
+                  <td style="color:#9ca3af;font-size:12px">0%</td>
+                </tr>
+                <tr>
+                  <td><span class="device-dot" style="background:#e5e7eb"></span>Tablet</td>
+                  <td class="device-count">0</td>
+                  <td style="color:#9ca3af;font-size:12px">0%</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sessions by location -->
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-header"><span class="card-title">Sessions by location</span></div>
+          <table class="data-table">
+            <thead><tr><th>Country</th><th>Sessions</th><th>% of Total</th></tr></thead>
+            <tbody>
+              <tr><td>🇺🇸 United States</td><td>4</td><td>100%</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Social referrer -->
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-header"><span class="card-title">Total sales by social referrer</span></div>
+          <div class="no-data">No data for this date range</div>
+        </div>
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-header"><span class="card-title">Sessions by social referrer</span></div>
+          <div class="no-data">No data for this date range</div>
+        </div>
+
+        <!-- Sessions by landing page -->
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-header"><span class="card-title">Sessions by landing page</span></div>
+          <table class="data-table">
+            <thead><tr><th>Landing Page</th><th>Sessions</th></tr></thead>
+            <tbody>
+              <tr><td>Homepage · <span style="color:#9ca3af;font-size:12px">/</span></td><td>4</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Performance by channel / referrer -->
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-header"><span class="card-title">Performance by referring channel</span></div>
+          <div class="no-data">No data for this date range</div>
+        </div>
+
+        <!-- Cohort -->
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-header">
+            <span class="card-title">Customer cohort analysis</span>
+            <div style="display:flex;gap:8px">
+              <button class="btn-sm btn-outline" style="background:var(--forest);color:#fff;font-size:11px">Cohort</button>
+              <button class="btn-sm btn-outline" style="font-size:11px">Months</button>
+            </div>
+          </div>
+          <div style="overflow-x:auto;padding:16px 20px">
+            <table class="cohort-table">
+              <thead>
+                <tr>
+                  <th>Month</th>
+                  <th>M0</th><th>M1</th><th>M2</th><th>M3</th><th>M4</th><th>M5</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td style="font-weight:600;color:#374151">Apr 2026</td><td class="cohort-cell heat-0">0%</td><td class="cohort-cell heat-0">0%</td><td class="cohort-cell heat-0">0%</td><td class="cohort-cell heat-0">0%</td><td class="cohort-cell heat-0">0%</td><td class="cohort-cell heat-0">0%</td></tr>
+                <tr><td style="font-weight:600;color:#374151">Mar 2026</td><td class="cohort-cell heat-0">0%</td><td class="cohort-cell heat-0">0%</td><td class="cohort-cell heat-0">0%</td><td class="cohort-cell heat-0">0%</td><td class="cohort-cell heat-0">0%</td><td class="cohort-cell heat-0">0%</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Sessions by referrer -->
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-header"><span class="card-title">Sessions by referrer</span></div>
+          <table class="data-table">
+            <thead><tr><th>Referrer</th><th>Sessions</th></tr></thead>
+            <tbody>
+              <tr><td>Direct</td><td>4</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- More no-data sections -->
+        <div class="card" style="margin-bottom:20px"><div class="card-header"><span class="card-title">Total sales by referrer</span></div><div class="no-data">No data for this date range</div></div>
+        <div class="card" style="margin-bottom:20px"><div class="card-header"><span class="card-title">Products by sell-through rate</span></div><div class="no-data">No sales recorded in this date range</div></div>
+        <div class="card" style="margin-bottom:20px"><div class="card-header"><span class="card-title">POS staff sales total</span></div><div class="no-data">No data for this date range</div></div>
+        <div class="card" style="margin-bottom:20px"><div class="card-header"><span class="card-title">Total sales by POS location</span></div><div class="no-data">No data for this date range</div></div>
+      </section>
+
+      <!-- ─── DISCOUNTS ─── -->
+      <section id="panel-discounts" class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Discounts</div>
+          <button class="btn-sm btn-primary">+ Create discount</button>
+        </div>
+        <div class="card" style="margin-bottom:16px;padding:16px 20px;display:flex;align-items:center;gap:12px;border-color:var(--gold);background:rgba(196,163,90,.04)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span style="font-size:13px;color:#374151"><strong>Active promo code:</strong> HEALTHY10 — 10% off sitewide</span>
+          <span class="order-badge paid" style="margin-left:auto">Active</span>
+        </div>
+        <div class="card">
+          <table class="data-table">
+            <thead><tr><th>Code</th><th>Type</th><th>Usage</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td style="font-weight:600;font-family:monospace">HEALTHY10</td><td>Percentage · 10% off</td><td>0 / unlimited</td><td><span class="order-badge paid">Active</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ─── MARKETING ─── -->
+      <section id="panel-marketing" class="panel">
+        <div class="panel-header"><div class="panel-title">Marketing</div><button class="btn-sm btn-primary">+ Create campaign</button></div>
+        <div class="card">
+          <div class="empty-state">
+            <div class="empty-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></div>
+            <div class="empty-title">No campaigns yet</div>
+            <div class="empty-sub">Create email, social, or paid campaigns to drive traffic to your store.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── THEMES (Online Store) ─── -->
+      <section id="panel-themes" class="panel">
+        <div class="panel-header">
+          <div><div class="panel-title">Online Store</div><div class="panel-sub">Manage your store's appearance and performance.</div></div>
+          <a href="index.html" target="_blank" class="btn-sm btn-primary" style="display:inline-flex;align-items:center;gap:6px">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            View Store
+          </a>
+        </div>
+
+        <!-- Performance Metrics -->
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-header"><span class="card-title">Web Performance · Core Web Vitals</span><span style="font-size:11px;color:#9ca3af">Sessions by device: 21 Desktop · 13 Mobile</span></div>
+          <div style="padding:20px">
+            <div class="perf-grid">
+              <div class="perf-card">
+                <div class="perf-label">LCP P75</div>
+                <div class="perf-val">1,012<span class="perf-unit">ms</span></div>
+                <span class="perf-badge good">✓ Good</span>
+                <div class="perf-progress" style="margin-top:10px"><div class="perf-fill" style="width:31%;background:var(--forest)"></div></div>
+                <div class="perf-sub">31% of sessions — Fast load (under 2.5s target)</div>
+              </div>
+              <div class="perf-card">
+                <div class="perf-label">INP P75</div>
+                <div class="perf-val">0<span class="perf-unit">ms</span></div>
+                <span class="perf-badge good">✓ Good</span>
+                <div class="perf-progress" style="margin-top:10px"><div class="perf-fill" style="width:100%"></div></div>
+                <div class="perf-sub">Interaction to Next Paint — excellent responsiveness</div>
+              </div>
+              <div class="perf-card">
+                <div class="perf-label">Cumulative Layout Shift</div>
+                <div class="perf-val">0<span class="perf-unit"></span></div>
+                <span class="perf-badge good">✓ Good</span>
+                <div class="perf-progress" style="margin-top:10px"><div class="perf-fill" style="width:100%"></div></div>
+                <div class="perf-sub">No unexpected layout shifts detected</div>
+              </div>
+            </div>
+
+            <!-- Sessions by Device -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px">
+              <div style="background:#f9fafb;border:1px solid var(--bd);border-radius:var(--r);padding:16px">
+                <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#9ca3af;margin-bottom:12px">Sessions by Device</div>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                  <span style="display:flex;align-items:center;gap:8px;font-size:13px"><span class="device-dot" style="background:var(--forest)"></span>Desktop</span>
+                  <span style="font-weight:700">21</span>
+                </div>
+                <div style="background:var(--bd2);border-radius:99px;height:6px;margin-bottom:12px;overflow:hidden"><div style="width:62%;height:100%;background:var(--forest);border-radius:99px"></div></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                  <span style="display:flex;align-items:center;gap:8px;font-size:13px"><span class="device-dot" style="background:var(--gold)"></span>Mobile</span>
+                  <span style="font-weight:700">13</span>
+                </div>
+                <div style="background:var(--bd2);border-radius:99px;height:6px;overflow:hidden"><div style="width:38%;height:100%;background:var(--gold);border-radius:99px"></div></div>
+              </div>
+              <div style="background:#f9fafb;border:1px solid var(--bd);border-radius:var(--r);padding:16px">
+                <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#9ca3af;margin-bottom:12px">Performance Snapshots</div>
+                <div style="font-size:12px;color:#374151;line-height:1.9">
+                  <div>📱 Mobile screenshot — <span style="color:var(--sage);font-weight:600">Captured</span></div>
+                  <div>🖥 Laptop screenshot — <span style="color:var(--sage);font-weight:600">Captured</span></div>
+                  <div>⚡ Last audit — <span style="color:#9ca3af">Apr 10, 2026 4:48 PM</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Current Theme -->
+        <div class="theme-section-label">Current Theme</div>
+        <div class="theme-card">
+          <div class="theme-thumb">Flora</div>
+          <div class="theme-info">
+            <div class="theme-name">
+              Flora
+              <span class="theme-tag current">Current theme</span>
+            </div>
+            <div class="theme-meta">Last saved: Nov 17 at 8:03 pm</div>
+            <div class="theme-update">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.44-4.67"/></svg>
+              Version 3.5.1 available
+            </div>
+          </div>
+          <div class="theme-actions">
+            <button class="btn-sm btn-outline">Customize</button>
+            <button class="btn-sm btn-outline">⋯</button>
+          </div>
+        </div>
+
+        <!-- Draft Themes -->
+        <div class="theme-section-label">Draft Themes <span style="font-size:12px;font-weight:400;color:#9ca3af">— Only visible to you</span></div>
+
+        <div class="theme-card">
+          <div class="theme-thumb peak">Peak</div>
+          <div class="theme-info">
+            <div class="theme-name">
+              Peak
+              <span class="theme-tag attention">Attention</span>
+              <span class="theme-tag trial">Trial</span>
+            </div>
+            <div class="theme-meta">Added: Nov 17 at 7:52 pm</div>
+            <div class="theme-update">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.44-4.67"/></svg>
+              Version 2.5.2 available
+            </div>
+          </div>
+          <div class="theme-actions">
+            <button class="btn-sm btn-outline">Preview</button>
+            <button class="btn-sm btn-gold">Publish</button>
+            <button class="btn-sm btn-outline">⋯</button>
+          </div>
+        </div>
+
+        <div class="theme-card">
+          <div class="theme-thumb">Flora</div>
+          <div class="theme-info">
+            <div class="theme-name">Flora</div>
+            <div class="theme-meta">Last saved: Nov 17 at 7:48 pm</div>
+            <div class="theme-update">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.44-4.67"/></svg>
+              Version 3.5.1 available
+            </div>
+          </div>
+          <div class="theme-actions">
+            <button class="btn-sm btn-outline">Preview</button>
+            <button class="btn-sm btn-gold">Publish</button>
+            <button class="btn-sm btn-outline">⋯</button>
+          </div>
+        </div>
+
+        <div style="margin-top:12px">
+          <button class="btn-sm btn-outline" style="display:inline-flex;align-items:center;gap:6px">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            Add theme from library
+          </button>
+        </div>
+      </section>
+
+      <!-- ─── SETTINGS ─── -->
+      <section id="panel-settings" class="panel">
+        <div class="panel-header"><div class="panel-title">Settings</div></div>
+        <div class="settings-layout">
+          <!-- Settings Nav -->
+          <div class="settings-nav">
+            <div class="settings-nav-item active" onclick="showSetting('general',this)"><span>General</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+            <div class="settings-nav-item" onclick="showSetting('plan',this)"><span>Ownership &amp; LLC</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+            <div class="settings-nav-item" onclick="showSetting('billing',this)"><span>Billing</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+            <div class="settings-nav-item" onclick="showSetting('users',this)"><span>Users</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+            <div class="settings-nav-item" onclick="showSetting('payments',this)"><span>Payments</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+            <div class="settings-nav-item" onclick="showSetting('checkout',this)"><span>Checkout</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+            <div class="settings-nav-item" onclick="showSetting('accounts',this)"><span>Customer accounts</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+            <div class="settings-nav-item" onclick="showSetting('shipping',this)"><span>Shipping and delivery</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+            <div class="settings-nav-item" onclick="showSetting('taxes',this)"><span>Taxes and duties</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+            <div class="settings-nav-item" onclick="showSetting('locations',this)"><span>Locations</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+            <div class="settings-nav-item" onclick="showSetting('apps',this)"><span>Apps</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+            <div class="settings-nav-item" onclick="showSetting('channels',this)"><span>Sales channels</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+            <div class="settings-nav-item" onclick="showSetting('domains',this)"><span>Domains</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+            <div class="settings-nav-item" onclick="showSetting('events',this)"><span>Customer events</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+            <div class="settings-nav-item" onclick="showSetting('notifications',this)"><span>Notifications</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+            <div class="settings-nav-item" onclick="showSetting('metafields',this)"><span>Metafields &amp; objects</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+            <div class="settings-nav-item" onclick="showSetting('languages',this)"><span>Languages</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+            <div class="settings-nav-item" onclick="showSetting('privacy',this)"><span>Customer privacy</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+            <div class="settings-nav-item" onclick="showSetting('policies',this)"><span>Policies</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+          </div>
+
+          <!-- Settings Content -->
+          <div class="settings-content" id="settingsContent">
+            <!-- General (default) -->
+            <div id="setting-general">
+              <h2>General</h2>
+              <p class="sub">Basic store information.</p>
+              <div class="field-row">
+                <div class="field-group"><label>Store Name</label><input type="text" value="Healthy-E"></div>
+                <div class="field-group"><label>Legal Name</label><input type="text" value="NC-Developer, LLC"></div>
+              </div>
+              <div class="field-group"><label>Store Email</label><input type="email" value="hello@healthy-e.store"></div>
+              <div class="field-group"><label>Store Phone</label><input type="tel" value="+1 (800) 555-1234"></div>
+              <div class="field-group"><label>Store Address</label><input type="text" value="Baltimore, Maryland 21201"></div>
+              <div class="field-row">
+                <div class="field-group"><label>Country / Region</label><select><option>United States</option></select></div>
+                <div class="field-group"><label>Timezone</label><select><option>(GMT-05:00) Eastern Time</option></select></div>
+              </div>
+              <button class="save-btn">Save changes</button>
+            </div>
+            <div id="setting-plan" style="display:none">
+              <h2>Ownership &amp; LLC</h2>
+              <p class="sub">Legal entity and copyright credentials for Healthy-E.</p>
+              <div class="llc-box">
+                <div class="llc-row-header">
+                  <div>
+                    <div class="llc-label">Legal Entity</div>
+                    <div class="llc-entity">NC-Developer, LLC</div>
+                  </div>
+                  <span class="order-badge paid">Active</span>
+                </div>
+                <div>
+                  <div class="llc-label">Owner</div>
+                  <div class="llc-value">Neeka C.</div>
+                </div>
+                <div>
+                  <div class="llc-label">Registered State</div>
+                  <div class="llc-value">Maryland, United States</div>
+                </div>
+                <div>
+                  <div class="llc-label">Registered Trademark</div>
+                  <div class="llc-value">Healthy Eat's<sup>®</sup></div>
+                </div>
+                <div>
+                  <div class="llc-label">Copyright</div>
+                  <div class="llc-value">© 2026 NC-Developer, LLC — All Rights Reserved</div>
+                </div>
+                <div class="llc-row-footer">
+                  <div class="llc-label">Store Domain</div>
+                  <div class="llc-value-domain">healthy-e.store</div>
+                </div>
+              </div>
+            </div>
+            <div id="setting-billing" style="display:none"><h2>Billing</h2><p class="sub">Manage payment methods and invoices.</p><div class="no-data">No billing information on file.</div><button class="btn-sm btn-primary" style="margin-top:12px">Add payment method</button></div>
+            <div id="setting-users" style="display:none"><h2>Users</h2><p class="sub">Control who has access to your admin.</p><table class="data-table"><thead><tr><th>Name</th><th>Email</th><th>Role</th></tr></thead><tbody><tr><td style="font-weight:600">Neeka C.</td><td>neeka@healthy-e.store</td><td><span class="order-badge paid">Owner</span></td></tr></tbody></table><button class="btn-sm btn-outline" style="margin-top:12px">+ Invite user</button></div>
+            <div id="setting-payments" style="display:none"><h2>Payments</h2><p class="sub">Accept payments from your customers.</p><div style="background:#f9fafb;border:1px solid var(--bd);border-radius:var(--r);padding:16px 20px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between"><span style="font-size:13px;font-weight:600">Stripe</span><span class="order-badge paid">Connected</span></div><div style="background:#f9fafb;border:1px solid var(--bd);border-radius:var(--r);padding:16px 20px;display:flex;align-items:center;justify-content:space-between"><span style="font-size:13px;font-weight:600">PayPal Express</span><span class="order-badge pending">Not configured</span></div></div>
+            <div id="setting-checkout" style="display:none"><h2>Checkout</h2><p class="sub">Customize your checkout experience.</p><div class="field-group"><label>Company name field</label><select><option>Hidden</option><option>Optional</option><option>Required</option></select></div><div class="field-group"><label>Order notes</label><select><option>Hidden</option><option selected>Optional</option></select></div><button class="save-btn">Save</button></div>
+            <div id="setting-accounts" style="display:none"><h2>Customer Accounts</h2><p class="sub">Manage how customers log in and create accounts.</p><div class="field-group"><label>Customer accounts</label><select><option>Optional (recommended)</option><option>Required</option><option>Disabled</option></select></div><button class="save-btn">Save</button></div>
+            <div id="setting-shipping" style="display:none"><h2>Shipping and Delivery</h2><p class="sub">Set up shipping rates and delivery options.</p><div class="no-data" style="margin-bottom:12px">No shipping zones configured yet.</div><button class="btn-sm btn-primary">+ Add shipping zone</button></div>
+            <div id="setting-taxes" style="display:none"><h2>Taxes and Duties</h2><p class="sub">Configure tax rates for your markets.</p><div style="background:#f9fafb;border:1px solid var(--bd);border-radius:var(--r);padding:16px 20px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between"><span style="font-size:13px;font-weight:600">United States</span><button class="btn-sm btn-outline">Configure</button></div></div>
+            <div id="setting-locations" style="display:none"><h2>Locations</h2><p class="sub">Manage where you stock inventory and fulfill orders from.</p><div style="background:#f9fafb;border:1px solid var(--bd);border-radius:var(--r);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px"><div><div style="font-size:13px;font-weight:600">Headquarters</div><div style="font-size:12px;color:#9ca3af">Baltimore, MD</div></div><span class="order-badge paid">Primary</span></div><button class="btn-sm btn-outline">+ Add location</button></div>
+            <div id="setting-apps" style="display:none"><h2>Apps</h2><p class="sub">Installed apps extend your store's functionality.</p><div class="no-data">No apps installed.</div><button class="btn-sm btn-primary" style="margin-top:12px">Browse app store</button></div>
+            <div id="setting-channels" style="display:none"><h2>Sales Channels</h2><p class="sub">Sell on multiple platforms and marketplaces.</p><div style="background:#f9fafb;border:1px solid var(--bd);border-radius:var(--r);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><span style="font-size:13px;font-weight:600">Online Store</span><span class="order-badge paid">Active</span></div><button class="btn-sm btn-outline">+ Add sales channel</button></div>
+            <div id="setting-domains" style="display:none"><h2>Domains</h2><p class="sub">Connect a custom domain to your online store.</p><div style="background:#f9fafb;border:1px solid var(--bd);border-radius:var(--r);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><div><div style="font-size:13px;font-weight:600">healthy-e.store</div><div style="font-size:12px;color:#9ca3af">Primary domain</div></div><span class="order-badge paid">Connected</span></div><button class="btn-sm btn-outline">+ Connect domain</button></div>
+            <div id="setting-events" style="display:none"><h2>Customer Events</h2><p class="sub">Track customer interactions with pixels and analytics.</p><div class="no-data">No customer event pixels configured.</div><button class="btn-sm btn-primary" style="margin-top:12px">Add pixel</button></div>
+            <div id="setting-notifications" style="display:none"><h2>Notifications</h2><p class="sub">Manage email notifications sent to you and your customers.</p><div class="field-group"><label>Order confirmation email</label><input type="email" value="hello@healthy-e.store"></div><div class="field-group"><label>Sender name</label><input type="text" value="Healthy-E"></div><button class="save-btn">Save</button></div>
+            <div id="setting-metafields" style="display:none"><h2>Metafields &amp; Metaobjects</h2><p class="sub">Add custom data fields to your store resources.</p><div class="no-data">No metafields defined.</div><button class="btn-sm btn-primary" style="margin-top:12px">+ Add metafield</button></div>
+            <div id="setting-languages" style="display:none"><h2>Languages</h2><p class="sub">Manage the languages your store supports.</p><div style="background:#f9fafb;border:1px solid var(--bd);border-radius:var(--r);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><span style="font-size:13px;font-weight:600">English (United States)</span><span class="order-badge paid">Default</span></div><button class="btn-sm btn-outline">+ Add language</button></div>
+            <div id="setting-privacy" style="display:none"><h2>Customer Privacy</h2><p class="sub">Configure your GDPR and privacy settings.</p><div class="field-group"><label>Cookie consent banner</label><select><option selected>Enabled</option><option>Disabled</option></select></div><div class="field-group"><label>Privacy policy URL</label><input type="url" value="/privacy.html"></div><button class="save-btn">Save</button></div>
+            <div id="setting-policies" style="display:none"><h2>Policies</h2><p class="sub">Add legal policies to your store.</p><div style="display:flex;flex-direction:column;gap:10px"><div style="background:#f9fafb;border:1px solid var(--bd);border-radius:var(--r);padding:14px 18px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;font-weight:600">Privacy Policy</span><a href="privacy.html" target="_blank" class="btn-sm btn-outline">View</a></div><div style="background:#f9fafb;border:1px solid var(--bd);border-radius:var(--r);padding:14px 18px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;font-weight:600">Terms of Service</span><a href="terms.html" target="_blank" class="btn-sm btn-outline">View</a></div><div style="background:#f9fafb;border:1px solid var(--bd);border-radius:var(--r);padding:14px 18px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;font-weight:600">Cookie Policy</span><a href="cookies.html" target="_blank" class="btn-sm btn-outline">View</a></div><div style="background:#f9fafb;border:1px solid var(--bd);border-radius:var(--r);padding:14px 18px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;font-weight:600">Shipping &amp; Returns</span><a href="shipping-returns.html" target="_blank" class="btn-sm btn-outline">View</a></div></div></div>
+          </div>
+        </div>
+      </section>
+
+    </main><!-- /panels -->
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<script>
+// ── AUTH ──────────────────────────────────────────
+const PASS = 'HealthyE2026';
+let chartsInit = false;
+
+document.getElementById('loginForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  if(document.getElementById('pw').value === PASS){
+    localStorage.setItem('he_admin','1');
+    showApp();
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+    document.getElementById('pw').value = '';
+    document.getElementById('pw').focus();
+  }
+});
+
+function togglePw(){
+  const inp = document.getElementById('pw');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+}
+
+function showApp(){
+  document.getElementById('gate').style.display = 'none';
+  const app = document.getElementById('app');
+  app.style.display = 'flex';
+  setTimeout(initCharts, 150);
+  updateClock();
+  setInterval(updateClock, 60000);
+}
+
+function logout(){
+  localStorage.removeItem('he_admin');
+  location.reload();
+}
+
+function updateClock(){
+  const now = new Date();
+  const h = now.getHours(), m = now.getMinutes();
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  const h12 = h % 12 || 12;
+  const mm = m.toString().padStart(2,'0');
+  document.getElementById('refreshInfo').textContent = `Last refreshed: ${h12}:${mm} ${ampm}`;
+}
+
+if(localStorage.getItem('he_admin') === '1') showApp();
+
+// ── NAV ──────────────────────────────────────────
+const titles = {overview:'Home',orders:'Orders',products:'Products',customers:'Customers',analytics:'Analytics',discounts:'Discounts',marketing:'Marketing',themes:'Online Store',settings:'Settings'};
+
+function navTo(panel, el){
+  document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  const target = document.getElementById('panel-'+panel);
+  if(target) target.classList.add('active');
+  document.getElementById('pageTitle').textContent = titles[panel] || panel;
+  if(panel === 'analytics' && !chartsInit) setTimeout(initCharts, 50);
+}
+
+// ── SETTINGS TABS ────────────────────────────────
+function showSetting(key, el){
+  document.querySelectorAll('.settings-nav-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('#settingsContent > div').forEach(d => d.style.display = 'none');
+  const t = document.getElementById('setting-'+key);
+  if(t) t.style.display = 'block';
+}
+
+// ── CHARTS ───────────────────────────────────────
+function initCharts(){
+  if(chartsInit) return;
+  chartsInit = true;
+
+  const hours = ['12A','1A','2A','3A','4A','5A','6A','7A','8A','9A','10A','11A','12P','1P','2P','3P','4P','5P','6P','7P','8P','9P','10P','11P'];
+  const zeros24 = Array(24).fill(0);
+
+  const gridColor = 'rgba(0,0,0,0.04)';
+  const tickColor = '#9ca3af';
+
+  function baseOpts(yLabel){
+    return {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}, tooltip:{mode:'index',intersect:false, callbacks:{label(ctx){return ` ${ctx.dataset.label}: ${yLabel ? yLabel+ctx.parsed.y : ctx.parsed.y}`}}}},
+      scales:{
+        x:{grid:{display:false}, ticks:{color:tickColor,font:{size:10},maxTicksLimit:8}},
+        y:{grid:{color:gridColor}, ticks:{color:tickColor,font:{size:10}}, beginAtZero:true}
+      },
+      interaction:{mode:'nearest',axis:'x',intersect:false}
+    };
+  }
+
+  // ── Sales Chart ──
+  new Chart(document.getElementById('salesChart'),{
+    type:'line',
+    data:{
+      labels:hours,
+      datasets:[
+        {label:'Apr 10',data:[...zeros24],borderColor:'#2D5016',backgroundColor:'rgba(45,80,22,0.06)',fill:true,tension:.35,pointRadius:3,pointHoverRadius:5,borderWidth:2},
+        {label:'Apr 9', data:[...zeros24],borderColor:'#C4A35A',backgroundColor:'rgba(196,163,90,0.06)',fill:true,tension:.35,pointRadius:3,pointHoverRadius:5,borderWidth:2,borderDash:[4,3]}
+      ]
+    },
+    options:{...baseOpts('$'), scales:{...baseOpts('$').scales, y:{...baseOpts('$').scales.y, ticks:{...baseOpts('$').scales.y.ticks, callback:v=>'$'+v}}}}
+  });
+
+  // ── Sessions Chart ──
+  const sesData = [...zeros24]; sesData[13] = 4;
+  new Chart(document.getElementById('sessionsChart'),{
+    type:'line',
+    data:{
+      labels:hours,
+      datasets:[
+        {label:'Apr 10',data:sesData,borderColor:'#2D5016',backgroundColor:'rgba(45,80,22,0.06)',fill:true,tension:.35,pointRadius:4,pointHoverRadius:6,borderWidth:2},
+        {label:'Apr 9', data:[...zeros24],borderColor:'#C4A35A',backgroundColor:'rgba(196,163,90,0.06)',fill:true,tension:.35,pointRadius:3,pointHoverRadius:5,borderWidth:2,borderDash:[4,3]}
+      ]
+    },
+    options:baseOpts('')
+  });
+
+  // ── AOV Chart ──
+  new Chart(document.getElementById('aovChart'),{
+    type:'line',
+    data:{
+      labels:hours,
+      datasets:[
+        {label:'Apr 10',data:[...zeros24],borderColor:'#2D5016',backgroundColor:'rgba(45,80,22,0.06)',fill:true,tension:.35,pointRadius:3,pointHoverRadius:5,borderWidth:2},
+        {label:'Apr 9', data:[...zeros24],borderColor:'#C4A35A',backgroundColor:'rgba(196,163,90,0.06)',fill:true,tension:.35,pointRadius:3,pointHoverRadius:5,borderWidth:2,borderDash:[4,3]}
+      ]
+    },
+    options:{...baseOpts('$'), scales:{...baseOpts('$').scales, y:{...baseOpts('$').scales.y, ticks:{...baseOpts('$').scales.y.ticks, callback:v=>'$'+v}}}}
+  });
+
+  // ── Conversion Rate Chart ──
+  new Chart(document.getElementById('crChart'),{
+    type:'line',
+    data:{
+      labels:hours,
+      datasets:[
+        {label:'Apr 10',data:[...zeros24],borderColor:'#2D5016',backgroundColor:'rgba(45,80,22,0.06)',fill:true,tension:.35,pointRadius:3,pointHoverRadius:5,borderWidth:2},
+        {label:'Apr 9', data:[...zeros24],borderColor:'#C4A35A',backgroundColor:'rgba(196,163,90,0.06)',fill:true,tension:.35,pointRadius:3,pointHoverRadius:5,borderWidth:2,borderDash:[4,3]}
+      ]
+    },
+    options:{...baseOpts('%'), scales:{...baseOpts('%').scales, y:{...baseOpts('%').scales.y, max:100, ticks:{...baseOpts('%').scales.y.ticks, callback:v=>v+'%'}}}}
+  });
+
+  // ── Device Doughnut ──
+  new Chart(document.getElementById('deviceChart'),{
+    type:'doughnut',
+    data:{
+      labels:['Desktop','Mobile','Tablet'],
+      datasets:[{data:[4,0,0],backgroundColor:['#2D5016','#C4A35A','#e5e7eb'],borderWidth:0,hoverOffset:4}]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,cutout:'70%',
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.label}: ${ctx.parsed}`}}}
+    }
+  });
+}
+</script>
+</body>
+</html>

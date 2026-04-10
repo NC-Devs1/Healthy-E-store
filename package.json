@@ -1,0 +1,20 @@
+{
+  "name": "healthy-e-estore",
+  "version": "1.0.0",
+  "description": "Healthy-E — Premium Organic Wellness E-Store",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "node serve.mjs",
+    "dev": "node serve.mjs",
+    "screenshot": "node screenshot.mjs http://localhost:3000",
+    "screenshot:full": "node screenshot.mjs http://localhost:3000 full"
+  },
+  "devDependencies": {
+    "puppeteer": "^24.15.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "license": "UNLICENSED"
+}

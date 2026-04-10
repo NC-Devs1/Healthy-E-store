@@ -52,3 +52,47 @@
 - Do not stop after one screenshot pass
 - Do not use `transition-all`
 - Do not use default Tailwind blue/indigo as primary color
+
+---
+
+## Session Log — Healthy-E Estore (2026-04-10)
+
+### Project: `/Users/neekachisholm/Desktop/Healthy-E estore/`
+
+**What was built this session:**
+
+#### Hero Animation
+- Added word-by-word headline clip-reveal (`overflow:hidden` + `translateY(110%)` → `translateY(0)` staggered per word per line)
+- Added floating morphing blob shapes (CSS `@keyframes blob-morph` with border-radius animation)
+- Added floating decorative gold ring orbs (`@keyframes orb-drift`)
+- Added animated scroll indicator bottom-right
+- Fix: `.hw` word-wrap spans need `padding-bottom:.12em; margin-bottom:-.12em` to prevent descender clipping
+- Fix: HTML for music player and `#yt-music-anchor` must be placed **before** `<script>` tag or elements will be `null` when JS runs
+
+#### Ambient Background Music Player
+- YouTube IFrame API player hidden off-screen (`position:fixed; top:-9999px`) with real dimensions (`320×180`) — 1×1px breaks player init
+- Volume set to 12/100 (low ambient)
+- Autoplay flow: start `mute=1` → `onReady` calls `unMute()` + `isMuted()` check at 250ms → retry at 400ms → if still muted, arm `click/pointerdown/touchstart/keydown` listeners
+- `scroll` does NOT count as a Chrome user-activation for audio — do not use it for unmute fallback
+- `origin` param in playerVars causes postMessage errors on localhost — omit it in dev
+- "Click anywhere to enable sound" nudge tooltip shows via `.needs-gesture` class when autoplay is blocked
+- Play/pause toggle; `intentionalPause` flag prevents first-interact handler from restarting after user pauses
+
+#### Screenshot Workflow (macOS)
+- Puppeteer is installed in the project: `node_modules/puppeteer`
+- Run: `node screenshot.mjs http://localhost:3000` (not the Windows path in old instructions above)
+- Screenshots save to `./temporary screenshots/screenshot-N.png`
+
+#### Dev Infrastructure
+- `package.json` — `"puppeteer": "^24.15.0"`
+- `serve.mjs` — Node.js static server at `http://localhost:3000`
+- `screenshot.mjs` — Puppeteer screenshot tool
+- `site.webmanifest`, `robots.txt`, `sitemap.xml`, `.htaccess`, `404.html`
+
+#### Product Cards — Luxury Styling
+- `aspect-ratio:16/7` on `.product-img-wrap`
+- `margin:10px 10px 0` — image floats inset inside card with gold frame
+- Card `border-radius:4px`, gold-tinted border and hover ring shadow
+
+#### Copy Fix
+- Footer: `Healthy Eats®` → `Healthy Eat's®`

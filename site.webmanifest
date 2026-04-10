@@ -1,0 +1,20 @@
+{
+  "name": "Healthy-E | Premium Organic Wellness",
+  "short_name": "Healthy-E",
+  "description": "Premium organic wellness — eco-friendly apparel, superfoods, and yoga gear.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F3F8F1",
+  "theme_color": "#2D5016",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "HealthyEatsLogo_1024x1024_transparent.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["shopping", "health", "lifestyle"],
+  "lang": "en-US"
+}

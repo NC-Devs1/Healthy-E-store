@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Track Your Order | Healthy-E</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="HealthyEatsLogo_1024x1024_transparent.png">
+<style>
+:root{
+  --forest:#2D5016;--deep-green:#1A3A0A;--sage:#6B8F5E;--cream:#F3F8F1;
+  --coral:#D4756B;--gold:#C4A35A;--charcoal:#282828;
+  --white:#FFFFFF;--border:rgba(45,80,22,0.09);--shadow:0 2px 16px rgba(44,44,44,0.06);
+  --r:12px;--r-lg:20px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);color:var(--charcoal);line-height:1.7;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+
+.topbar{background:var(--deep-green);color:var(--cream);text-align:center;padding:10px 16px;font-size:13px;font-weight:500;letter-spacing:.04em}
+.topbar span{color:var(--gold)}
+
+.navbar{background:rgba(243,248,241,0.97);border-bottom:1px solid var(--border);padding:0 clamp(1rem,4vw,3rem);height:72px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow);position:sticky;top:0;z-index:100}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-logo img{height:44px;width:44px;object-fit:contain}
+.nav-logo-text{font-size:15px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--forest)}
+.back-link{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:var(--forest);padding:8px 16px;border-radius:8px;border:1.5px solid var(--forest);transition:all .2s}
+.back-link:hover{background:var(--forest);color:var(--cream)}
+
+.page-hero{background:var(--deep-green);padding:clamp(3rem,6vw,5rem) clamp(1rem,4vw,3rem);text-align:center;position:relative;overflow:hidden}
+.page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 60% 30%,rgba(196,163,90,.09) 0%,transparent 60%);pointer-events:none}
+.page-hero .eyebrow{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.page-hero h1{font-family:'Instrument Serif',serif;font-size:clamp(2.2rem,5vw,3.4rem);color:var(--cream);margin-bottom:16px}
+.page-hero p{font-size:clamp(15px,2vw,17px);color:rgba(243,248,241,.65);max-width:480px;margin:0 auto}
+
+.layout{max-width:680px;margin:0 auto;padding:clamp(2.5rem,6vw,5rem) clamp(1rem,4vw,2rem)}
+
+.track-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r-lg);padding:clamp(2rem,4vw,3rem);box-shadow:var(--shadow);margin-bottom:40px}
+.track-card h2{font-family:'Instrument Serif',serif;font-size:1.6rem;color:var(--forest);margin-bottom:6px}
+.track-card .subtitle{font-size:14px;color:#888;margin-bottom:28px}
+
+.form-group{margin-bottom:20px}
+.form-group label{display:block;font-size:13px;font-weight:600;color:var(--charcoal);margin-bottom:6px;letter-spacing:.02em}
+.form-group input{width:100%;padding:13px 14px;border:1.5px solid var(--border);border-radius:var(--r);font-family:inherit;font-size:15px;color:var(--charcoal);background:var(--cream);transition:border-color .2s,box-shadow .2s;outline:none}
+.form-group input:focus{border-color:var(--forest);box-shadow:0 0 0 3px rgba(45,80,22,.08)}
+.form-group input::placeholder{color:#bbb}
+.track-btn{width:100%;padding:15px;background:var(--forest);color:var(--cream);font-family:inherit;font-size:15px;font-weight:700;border:none;border-radius:var(--r);cursor:pointer;letter-spacing:.04em;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.track-btn:hover{background:var(--deep-green);transform:translateY(-1px)}
+
+.result-area{display:none;margin-top:24px;padding-top:24px;border-top:1px solid var(--border)}
+.result-area.show{display:block}
+.order-summary{background:var(--cream);border-radius:var(--r);padding:20px;margin-bottom:20px}
+.order-summary .row{display:flex;justify-content:space-between;font-size:14px;padding:6px 0;border-bottom:1px solid rgba(45,80,22,.07)}
+.order-summary .row:last-child{border-bottom:none}
+.order-summary .row span:first-child{color:#777}
+.order-summary .row span:last-child{font-weight:600;color:var(--charcoal)}
+
+.timeline{display:flex;flex-direction:column;gap:0}
+.tl-step{display:flex;gap:16px;position:relative}
+.tl-step:not(:last-child)::before{content:'';position:absolute;left:15px;top:32px;bottom:-4px;width:2px;background:var(--border)}
+.tl-step.done::before{background:var(--forest)}
+.tl-dot{width:32px;height:32px;border-radius:50%;border:2px solid var(--border);background:var(--white);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#bbb;z-index:1}
+.tl-step.done .tl-dot{background:var(--forest);border-color:var(--forest);color:var(--cream)}
+.tl-step.current .tl-dot{background:var(--gold);border-color:var(--gold);color:var(--deep-green)}
+.tl-content{padding-bottom:24px}
+.tl-content h4{font-size:14px;font-weight:700;color:var(--charcoal);margin-bottom:2px}
+.tl-step.done .tl-content h4{color:var(--forest)}
+.tl-step.current .tl-content h4{color:var(--gold)}
+.tl-content span{font-size:13px;color:#aaa}
+.tl-step.done .tl-content span,.tl-step.current .tl-content span{color:#888}
+
+.help-strip{background:var(--cream);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;text-align:center}
+.help-strip h3{font-size:15px;font-weight:700;color:var(--charcoal);margin-bottom:6px}
+.help-strip p{font-size:14px;color:#777;margin-bottom:16px}
+.help-links{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.help-links a{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--forest);padding:9px 16px;border-radius:8px;border:1.5px solid var(--forest);transition:all .2s}
+.help-links a:hover{background:var(--forest);color:var(--cream)}
+
+.carriers{background:var(--white);border:1px solid var(--border);border-radius:var(--r-lg);padding:28px;box-shadow:var(--shadow);margin-top:32px}
+.carriers h3{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.carrier-list{display:flex;flex-direction:column;gap:12px}
+.carrier-row{display:flex;justify-content:space-between;align-items:center;font-size:14px}
+.carrier-row span{color:#666}
+.carrier-row a{color:var(--forest);font-weight:600;font-size:13px}
+.carrier-row a:hover{text-decoration:underline}
+
+footer{background:var(--deep-green);color:var(--cream);padding:clamp(2rem,4vw,3rem) clamp(1rem,4vw,3rem) 0;margin-top:64px}
+.footer-bottom{max-width:1200px;margin:0 auto;padding:20px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:12px;color:rgba(245,240,232,.4)}
+.footer-bottom a{color:rgba(245,240,232,.5);transition:color .2s}
+.footer-bottom a:hover{color:var(--cream)}
+</style>
+</head>
+<body>
+
+<div class="topbar">Free shipping on orders over $75 &nbsp;·&nbsp; <span>Use code HEALTHY10 for 10% off</span></div>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">
+    <img src="HealthyEatsLogo_1024x1024_transparent.png" alt="Healthy-E Logo">
+    <span class="nav-logo-text">Healthy&#8209;E</span>
+  </a>
+  <a href="index.html" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to Store
+  </a>
+</nav>
+
+<div class="page-hero">
+  <div class="eyebrow">Support</div>
+  <h1>Track Your Order</h1>
+  <p>Enter your order number and email to get real-time tracking on your shipment.</p>
+</div>
+
+<div class="layout">
+
+  <div class="track-card">
+    <h2>Order Lookup</h2>
+    <p class="subtitle">Your order number is in your confirmation email (e.g. HE-10234).</p>
+    <form onsubmit="lookupOrder(event)">
+      <div class="form-group">
+        <label for="orderNum">Order Number</label>
+        <input type="text" id="orderNum" placeholder="HE-10234" required>
+      </div>
+      <div class="form-group">
+        <label for="orderEmail">Email Address</label>
+        <input type="email" id="orderEmail" placeholder="jane@example.com" required>
+      </div>
+      <button type="submit" class="track-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Track Order
+      </button>
+    </form>
+
+    <div class="result-area" id="resultArea">
+      <div class="order-summary">
+        <div class="row"><span>Order Number</span><span id="resOrderNum">—</span></div>
+        <div class="row"><span>Status</span><span style="color:var(--forest)" id="resStatus">—</span></div>
+        <div class="row"><span>Estimated Delivery</span><span id="resETA">—</span></div>
+        <div class="row"><span>Carrier</span><span id="resCarrier">—</span></div>
+        <div class="row"><span>Tracking #</span><span id="resTracking">—</span></div>
+      </div>
+
+      <div class="timeline" id="timeline">
+        <div class="tl-step done">
+          <div class="tl-dot"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="tl-content"><h4>Order Placed</h4><span>Confirmed</span></div>
+        </div>
+        <div class="tl-step done">
+          <div class="tl-dot"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="tl-content"><h4>Processing</h4><span>Packed and ready</span></div>
+        </div>
+        <div class="tl-step current">
+          <div class="tl-dot"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+          <div class="tl-content"><h4>In Transit</h4><span>Your order is on its way</span></div>
+        </div>
+        <div class="tl-step">
+          <div class="tl-dot"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+          <div class="tl-content"><h4>Delivered</h4><span>Pending</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="help-strip">
+    <h3>Need more help with your order?</h3>
+    <p>Our support team is available Monday–Friday, 9 am–5 pm ET.</p>
+    <div class="help-links">
+      <a href="contact.html">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Contact Support
+      </a>
+      <a href="shipping-returns.html">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+        Returns Policy
+      </a>
+      <a href="faq.html">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        FAQ
+      </a>
+    </div>
+  </div>
+
+  <div class="carriers">
+    <h3>Track directly with the carrier</h3>
+    <div class="carrier-list">
+      <div class="carrier-row"><span>USPS — United States Postal Service</span><a href="https://tools.usps.com/go/TrackConfirmAction_input" target="_blank" rel="noopener">Track on USPS →</a></div>
+      <div class="carrier-row"><span>UPS — United Parcel Service</span><a href="https://www.ups.com/track" target="_blank" rel="noopener">Track on UPS →</a></div>
+      <div class="carrier-row"><span>FedEx — Federal Express</span><a href="https://www.fedex.com/en-us/tracking.html" target="_blank" rel="noopener">Track on FedEx →</a></div>
+      <div class="carrier-row"><span>DHL — International shipments</span><a href="https://www.dhl.com/en/express/tracking.html" target="_blank" rel="noopener">Track on DHL →</a></div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-bottom">
+    <span>© 2026 NC-Developer, LLC — All Rights Reserved. Healthy Eat's® is a registered trademark.</span>
+    <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a> &nbsp;·&nbsp; <a href="cookies.html">Cookies</a></span>
+  </div>
+</footer>
+
+<script>
+function lookupOrder(e) {
+  e.preventDefault();
+  const num = document.getElementById('orderNum').value.trim().toUpperCase();
+  const email = document.getElementById('orderEmail').value.trim();
+
+  // Demo: display a plausible in-transit result for any valid input
+  document.getElementById('resOrderNum').textContent = num;
+  document.getElementById('resStatus').textContent = 'In Transit';
+  // Generate a plausible delivery estimate (4 days from today)
+  const eta = new Date();
+  eta.setDate(eta.getDate() + 4);
+  document.getElementById('resETA').textContent = eta.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  document.getElementById('resCarrier').textContent = 'USPS Priority Mail';
+  document.getElementById('resTracking').textContent = '9400111899223775401234';
+
+  document.getElementById('resultArea').classList.add('show');
+}
+</script>
+
+</body>
+</html>
