@@ -1448,11 +1448,27 @@ function toggleMobileMenu() { document.getElementById('mobileMenu').classList.to
 function closeMobileMenu() { document.getElementById('mobileMenu').classList.remove('open'); }
 
 // ─── NEWSLETTER ────────────────────────────────────────────
-function subscribeNewsletter() {
-  const v = document.getElementById('emailInput').value;
-  if (!v || !v.includes('@')) { showToast('Please enter a valid email address'); return; }
-  document.getElementById('emailInput').value = '';
-  showToast('Welcome to the Healthy-E community! 🌿');
+async function subscribeNewsletter() {
+  const input = document.getElementById('emailInput');
+  const email = input.value.trim();
+  if (!email || !email.includes('@')) { showToast('Please enter a valid email address'); return; }
+
+  const FORMSPREE_ID = 'YOUR_FORM_ID'; // ← replace with your Formspree form ID
+  try {
+    const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ email, _subject: 'Healthy_E web-sub', _replyto: email })
+    });
+    if (res.ok) {
+      input.value = '';
+      showToast('Welcome to the Healthy-E community!');
+    } else {
+      showToast('Something went wrong. Please try again.');
+    }
+  } catch {
+    showToast('Something went wrong. Please try again.');
+  }
 }
 // ─── AMBIENT MUSIC PLAYER ─────────────────────────────────
 (function () {
