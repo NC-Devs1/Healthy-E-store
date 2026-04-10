@@ -269,6 +269,12 @@ ul{list-style:none}
 .carousel-arrow:hover{background:var(--forest);color:white}
 .carousel-prev{left:-22px}
 .carousel-next{right:-22px}
+@media(max-width:700px){
+  .carousel-wrapper{padding-bottom:60px}
+  .carousel-arrow{top:auto;bottom:0;transform:none}
+  .carousel-prev{left:calc(50% - 52px)}
+  .carousel-next{right:calc(50% - 52px)}
+}
 
 /* PRODUCT CARD */
 .product-card{min-width:calc(25% - 15px);border-radius:4px;overflow:hidden;background:var(--white);border:1px solid rgba(196,163,90,.22);transition:all .4s var(--ease);position:relative;flex-shrink:0;box-shadow:0 1px 6px rgba(44,44,44,.05)}
@@ -496,18 +502,19 @@ footer{background:var(--deep-green);color:var(--cream);padding:clamp(3rem,6vw,5r
 /* YouTube iframe must have real dimensions to initialize — hide via position only */
 #yt-music-anchor{position:fixed;top:-9999px;left:-9999px;width:320px;height:180px;border:0;pointer-events:none;visibility:hidden}
 /* "Tap to enable music" nudge — shows when autoplay is blocked */
+@keyframes nudge-pulse{0%,100%{opacity:1}50%{opacity:.65}}
 .music-nudge{
   position:absolute;bottom:calc(100% + 10px);left:0;
-  background:rgba(20,46,8,.95);border:1px solid rgba(196,163,90,.4);
-  color:rgba(245,240,232,.88);font-size:10px;font-weight:700;
+  background:rgba(20,46,8,.97);border:1px solid rgba(196,163,90,.6);
+  color:rgba(245,240,232,.95);font-size:10px;font-weight:700;
   letter-spacing:.1em;text-transform:uppercase;
-  padding:7px 12px;border-radius:8px;white-space:nowrap;
+  padding:8px 14px;border-radius:8px;white-space:nowrap;
   pointer-events:none;opacity:0;transform:translateY(4px);
   transition:opacity .3s,transform .3s;
 }
 .music-nudge::after{content:'';position:absolute;top:100%;left:18px;
-  border:5px solid transparent;border-top-color:rgba(196,163,90,.4)}
-.music-player.needs-gesture .music-nudge{opacity:1;transform:translateY(0)}
+  border:5px solid transparent;border-top-color:rgba(196,163,90,.6)}
+.music-player.needs-gesture .music-nudge{opacity:1;transform:translateY(0);animation:nudge-pulse 1.8s ease-out infinite}
 .music-player{
   position:fixed;bottom:28px;left:28px;z-index:950;
   display:flex;align-items:center;gap:9px;
@@ -1017,7 +1024,7 @@ footer{background:var(--deep-green);color:var(--cream);padding:clamp(3rem,6vw,5r
 
 <!-- Ambient Music Player Widget — must be in DOM before the JS runs -->
 <div class="music-player" id="musicPlayer" role="region" aria-label="Ambient music player">
-  <span class="music-nudge" aria-live="polite">Click anywhere to enable sound</span>
+  <span class="music-nudge" aria-live="polite">Tap anywhere to enable sound</span>
   <span class="music-note" aria-hidden="true">♫</span>
   <span class="music-label">Ambient</span>
   <div class="music-wave" aria-hidden="true">
@@ -1437,7 +1444,7 @@ function subscribeNewsletter() {
 // ─── AMBIENT MUSIC PLAYER ─────────────────────────────────
 (function () {
   var VIDEO_ID = '5yx6BWlEVcY';
-  var VOLUME   = 12; // 0–100
+  var VOLUME   = 100; // 0–100
 
   var playerEl         = document.getElementById('musicPlayer');
   var toggleBtn        = document.getElementById('musicToggle');
