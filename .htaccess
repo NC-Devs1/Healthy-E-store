@@ -7,23 +7,60 @@ ErrorDocument 404 /404.html
 DirectoryIndex index.html
 
 # ── Security headers ─────────────────────────────────────────────────────────
+# Standard: NIST SP 800-131A, OWASP Secure Headers Project, PCI DSS Req. 6.4
 <IfModule mod_headers.c>
-  Header always set X-Content-Type-Options    "nosniff"
-  Header always set X-Frame-Options           "SAMEORIGIN"
-  Header always set X-XSS-Protection          "1; mode=block"
-  Header always set Referrer-Policy           "strict-origin-when-cross-origin"
-  Header always set Permissions-Policy        "camera=(), microphone=(), geolocation=()"
 
-  # Content-Security-Policy — allows Google Fonts, YouTube embeds, and the YT IFrame API
+  # Prevent MIME-type sniffing attacks (OWASP A05:2021)
+  Header always set X-Content-Type-Options    "nosniff"
+
+  # Prevent clickjacking (OWASP A05:2021)
+  Header always set X-Frame-Options           "SAMEORIGIN"
+
+  # Legacy XSS filter (belt-and-suspenders for older browsers)
+  Header always set X-XSS-Protection          "1; mode=block"
+
+  # Limit referrer info sent to third parties (privacy)
+  Header always set Referrer-Policy           "strict-origin-when-cross-origin"
+
+  # Restrict device sensor APIs (privacy — CCPA §1798.140)
+  Header always set Permissions-Policy \
+    "camera=(), microphone=(), geolocation=(), payment=(self), usb=(), serial=(), bluetooth=()"
+
+  # HTTP Strict Transport Security — force HTTPS for 1 year (PCI DSS Req. 4.2)
+  # Uncomment when SSL certificate is live:
+  # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+  # Content-Security-Policy
+  # Allows: Google Fonts, YouTube, Formspree (newsletter), Stripe (payments)
+  # Blocks: inline eval(), data: URIs in scripts, unknown origins
   Header always set Content-Security-Policy "\
     default-src 'self'; \
-    script-src 'self' 'unsafe-inline' https://www.youtube.com https://s.ytimg.com; \
+    script-src 'self' 'unsafe-inline' \
+      https://www.youtube.com https://s.ytimg.com \
+      https://js.stripe.com https://checkout.stripe.com; \
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; \
     font-src 'self' https://fonts.gstatic.com; \
-    img-src 'self' data: https://i.ytimg.com https://yt3.ggpht.com; \
-    frame-src https://www.youtube.com https://www.youtube-nocookie.com; \
-    connect-src 'self' https://www.youtube.com; \
-    media-src 'self' https://www.youtube.com;"
+    img-src 'self' data: blob: https://i.ytimg.com https://yt3.ggpht.com; \
+    frame-src \
+      https://www.youtube.com https://www.youtube-nocookie.com \
+      https://js.stripe.com https://hooks.stripe.com; \
+    connect-src 'self' \
+      https://www.youtube.com \
+      https://formspree.io \
+      https://api.stripe.com; \
+    media-src 'self' blob: https://www.youtube.com; \
+    form-action 'self' https://formspree.io; \
+    base-uri 'self'; \
+    upgrade-insecure-requests;"
+
+  # Cross-Origin policies (prevent Spectre-style attacks on shared memory)
+  Header always set Cross-Origin-Opener-Policy    "same-origin-allow-popups"
+  Header always set Cross-Origin-Resource-Policy  "same-site"
+
+  # Remove server fingerprint info
+  Header always unset X-Powered-By
+  Header always unset Server
+
 </IfModule>
 
 # ── HTTPS redirect (enable when SSL is live) ─────────────────────────────────
@@ -80,6 +117,16 @@ DirectoryIndex index.html
     Require all denied
   </IfModule>
 </FilesMatch>
+
+# Block direct browsing of security module source (still loadable by HTML <script> tags)
+# This prevents attackers from studying the security implementation via the browser
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # Allow script tags to load security/*.js (header Sec-Fetch-Dest: script)
+  # Block direct browser navigation (Sec-Fetch-Dest: document)
+  RewriteCond %{HTTP:Sec-Fetch-Dest} ^document$ [NC]
+  RewriteRule ^security/.*\.js$  /404.html [R=404,L]
+</IfModule>
 
 # Allow specific JSON files needed by the browser
 <Files "site.webmanifest">

@@ -1743,6 +1743,19 @@ async function subscribeNewsletter() {
 }());
 </script>
 
+<!-- ═══════════════════════════════════════════════════════════════════════
+     HEALTHY-E SECURITY SUITE
+     Load order matters: crypto → integrity → session → compliance → checkout → init
+     All modules use the browser-native Web Crypto API (SubtleCrypto).
+     No third-party security dependencies. No telemetry. No data leaves this device.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<script src="/security/crypto.js" defer></script>
+<script src="/security/integrity.js" defer></script>
+<script src="/security/session.js" defer></script>
+<script src="/security/compliance.js" defer></script>
+<script src="/security/checkout-security.js" defer></script>
+<script src="/security/init.js" defer></script>
+
 
 </body>
 </html>

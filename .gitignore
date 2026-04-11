@@ -56,6 +56,9 @@ temporary screenshots/*.png
 serve.mjs
 screenshot.mjs
 
+# ─── Security module source (deploy to server manually — keep out of public repo) ──
+security/
+
 # ─── OS-generated files ────────────────────────────────────────────────────────
 Desktop.ini
 $RECYCLE.BIN/
