@@ -125,7 +125,7 @@ ul{list-style:none}
 
 /* HERO CAROUSEL */
 .hero{position:relative;height:calc(100vh - var(--nav-h));min-height:560px;overflow:hidden;margin-top:calc(var(--nav-h) + 32px)}
-.hero-slides{display:flex;height:100%;transition:transform .8s var(--ease)}
+.hero-slides{display:flex;height:100%;transition:transform 1.1s var(--ease)}
 .hero-slide{min-width:100%;height:100%;position:relative;display:flex;align-items:center;overflow:hidden}
 .hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;transform:scale(1.05);transition:transform 8s ease}
 .hero-slide.active .hero-bg{transform:scale(1)}
@@ -1222,7 +1222,17 @@ function heroGoTo(i) {
   resetHeroTimer();
 }
 function heroNav(dir) { heroGoTo(heroIdx + dir); }
-function resetHeroTimer() { clearInterval(heroTimer); heroTimer = setInterval(()=>heroNav(1), 5200); }
+function resetHeroTimer() { clearInterval(heroTimer); heroTimer = setInterval(()=>heroNav(1), 8000); }
+
+// Pause hero auto-advance while tab is hidden so Android doesn't batch-fire
+// queued ticks all at once when the user returns, causing rapid-slide effect.
+document.addEventListener('visibilitychange', function () {
+  if (document.hidden) {
+    clearInterval(heroTimer);
+  } else {
+    resetHeroTimer();
+  }
+});
 
 // Trigger initial slide animation (force reflow so transitions fire)
 heroSlides[0].classList.remove('active');
@@ -1532,13 +1542,42 @@ async function subscribeNewsletter() {
 // ─── AMBIENT MUSIC PLAYER ─────────────────────────────────
 (function () {
   var VIDEO_ID = '5yx6BWlEVcY';
-  var VOLUME   = 100; // 0–100
+  var VOLUME      = 20;  // 0–100  soft ambient ceiling
+  var FADE_MS     = 3000; // ms to ramp from 0 → VOLUME on each play
 
   var playerEl         = document.getElementById('musicPlayer');
   var toggleBtn        = document.getElementById('musicToggle');
   var ytPlayer         = null;
   var playing          = false;
   var intentionalPause = false;
+  var isArmed          = false; // prevents stacking duplicate gesture listeners
+  var fadeRaf          = null;  // requestAnimationFrame handle for volume fade
+
+  /* ── Smooth volume fade-in ──────────────────────────────── */
+  // Ramps volume from 0 → VOLUME over FADE_MS so the music never
+  // startles the visitor — it eases in gently.
+  function fadeInVolume(t) {
+    if (fadeRaf) cancelAnimationFrame(fadeRaf);
+    t.setVolume(0);
+    var start = null;
+    function step(ts) {
+      if (!start) start = ts;
+      var progress = Math.min((ts - start) / FADE_MS, 1);
+      // ease-out curve so it feels natural, not linear
+      var eased = 1 - Math.pow(1 - progress, 3);
+      t.setVolume(Math.round(VOLUME * eased));
+      if (progress < 1) {
+        fadeRaf = requestAnimationFrame(step);
+      } else {
+        fadeRaf = null;
+      }
+    }
+    fadeRaf = requestAnimationFrame(step);
+  }
+
+  function cancelFade() {
+    if (fadeRaf) { cancelAnimationFrame(fadeRaf); fadeRaf = null; }
+  }
 
   /* ── Update UI state ────────────────────────────────────── */
   function setState(on) {
@@ -1547,11 +1586,10 @@ async function subscribeNewsletter() {
     toggleBtn.setAttribute('aria-label', on ? 'Pause ambient music' : 'Play ambient music');
   }
 
-  /* ── Unmute, set volume, play — with muted-check retry ─── */
+  /* ── Unmute, fade in volume, play — with muted-check retry ─── */
   function startAudio(target) {
     var t = target || ytPlayer;
     if (!t || typeof t.playVideo !== 'function') return;
-    t.setVolume(VOLUME);
     t.unMute();
     t.playVideo();
     intentionalPause = false;
@@ -1560,16 +1598,17 @@ async function subscribeNewsletter() {
     // Check 250 ms later; if still muted, try once more then fall back.
     setTimeout(function () {
       if (!t.isMuted || !t.isMuted()) {
-        // Actually unmuted — we're live
+        // Actually unmuted — start gentle fade-in
+        fadeInVolume(t);
         setState(true);
         disarmFirstInteract();
         return;
       }
       // Still muted — one more aggressive attempt
-      t.setVolume(VOLUME);
       t.unMute();
       setTimeout(function () {
         if (!t.isMuted || !t.isMuted()) {
+          fadeInVolume(t);
           setState(true);
           disarmFirstInteract();
         } else {
@@ -1597,12 +1636,15 @@ async function subscribeNewsletter() {
   }
 
   function armFirstInteract() {
+    if (isArmed) return; // guard: never stack duplicate listeners
+    isArmed = true;
     GESTURE_EVENTS.forEach(function (ev) {
       document.addEventListener(ev, onFirstInteract, { passive: true });
     });
   }
 
   function disarmFirstInteract() {
+    isArmed = false;
     GESTURE_EVENTS.forEach(function (ev) {
       document.removeEventListener(ev, onFirstInteract);
     });
@@ -1611,6 +1653,28 @@ async function subscribeNewsletter() {
 
   /* ── YouTube IFrame API ready ───────────────────────────── */
   window.onYouTubeIframeAPIReady = function () {
+    if (ytPlayer) return; // prevent double-init (Android can re-fire this)
+
+    // Pause player when tab goes to background; resume when user returns.
+    // Without this, Android Chrome can batch-buffer audio and replay it
+    // at double-speed, or fire multiple onStateChange(2) events on resume.
+    document.addEventListener('visibilitychange', function () {
+      if (!ytPlayer || typeof ytPlayer.getPlayerState !== 'function') return;
+      if (document.hidden) {
+        // Tab hidden — cancel any fade and pause to prevent Android catch-up
+        cancelFade();
+        if (ytPlayer.getPlayerState() === 1) {
+          ytPlayer.pauseVideo();
+          // Don't set intentionalPause — we want it to resume on return
+        }
+      } else {
+        // Tab visible again — resume only if we weren't intentionally paused
+        if (!intentionalPause && !playing) {
+          startAudio();
+        }
+      }
+    });
+
     ytPlayer = new YT.Player('yt-music-anchor', {
       width:   320,
       height:  180,
@@ -1663,6 +1727,7 @@ async function subscribeNewsletter() {
     if (!ytPlayer || typeof ytPlayer.playVideo !== 'function') return;
     if (playing) {
       intentionalPause = true;
+      cancelFade(); // stop any in-progress fade before pausing
       ytPlayer.pauseVideo();
       setState(false);
     } else {
